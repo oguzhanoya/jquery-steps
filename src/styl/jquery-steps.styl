@@ -1,0 +1,67 @@
+
+bg-done = #3cb371;
+bg-error = #e7505a;
+bg-active = #32c5d2;
+bg-gray = #e5e5e5;
+
+.step-app
+  & > .step-steps
+    margin 0
+    padding 0
+    display flex
+    border-radius 3px 3px 0 0
+    overflow hidden
+    & > li
+      list-style none
+      flex 1
+      &:last-child a
+          border none
+      & > a
+        display block
+        padding 10px
+        color #333
+        background-color bg-gray
+        text-decoration none
+        border-right 1px solid #fff
+        & > .number
+          background #fff
+          padding 0 8px
+          display inline-block
+          text-align center
+          margin-right 15px
+          border-radius 3px
+          color #333
+        &:hover
+          background-color darken(bg-gray, 3)
+      &.active
+        a
+          background-color bg-active
+          color #fff
+      &.error
+        a
+          background-color bg-error
+          color #fff
+      &.done
+        a
+          background-color bg-done
+          color #fff
+  & > .step-content
+    border 1px solid bg-gray
+    padding 10px
+    border-top 0
+    & > .step-tab-panel
+      display none
+      &.active
+        display block
+  & > .step-footer
+    margin-top 15px
+    margin-bottom 15px
+    & > .step-btn
+      padding 4px 16px
+      color #333
+      text-decoration none
+      background bg-gray
+      border-radius 3px
+      border none
+      outline none
+      cursor pointer

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Destroy</title>
+  <link rel="stylesheet" href="../dist/jquery-steps.css">
+  <!-- Demo stylesheet -->
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="demo">
+      <div class="step-app">
+          <ul class="step-steps">
+              <li><a href="#step1">Step 1</a></li>
+              <li><a href="#step2">Step 2</a></li>
+              <li><a href="#step3">Step 3</a></li>
+          </ul>
+          <div class="step-content">
+              <div class="step-tab-panel" id="step1">
+                  ...
+              </div>
+              <div class="step-tab-panel" id="step2">
+                  ...
+              </div>
+              <div class="step-tab-panel" id="step3">
+                  ...
+              </div>
+          </div>
+          <div class="step-footer">
+              <button data-direction="prev" class="step-btn">Previous</button>
+              <button data-direction="next" class="step-btn">Next</button>
+              <button data-direction="finish" class="step-btn">Finish</button>
+          </div>
+      </div>
+  </div>
+
+  <button id="btnDestroy">Destroy</button>
+
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="../dist/jquery-steps.js"></script>
+  <script>
+    var steps = $('#demo').steps({
+      onDestroy: function(){
+        alert('plugin destroyed');
+      }
+    });
+    steps_api = steps.data('plugin_Steps');
+
+    $('#btnDestroy').on('click', function (e) {
+      e.preventDefault();
+      steps_api.destroy();
+		});
+	</script>
+</body>
+</html>

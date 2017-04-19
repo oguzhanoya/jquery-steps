@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jasmine Spec Runner</title>
+  <link rel="shortcut icon" type="image/png" href="http://jasmine.github.io/images/jasmine.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.5.2/jasmine.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.5.2/jasmine.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.5.2/jasmine-html.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.5.2/boot.min.js"></script>
+</head>
+<body>
+
+  <div id="demo" style="display: none;">
+    <div class="step-app">
+      <ul class="step-steps">
+        <li><a href="#step1">Step 1</a></li>
+        <li><a href="#step2">Step 2</a></li>
+        <li><a href="#step3">Step 3</a></li>
+      </ul>
+      <div class="step-content">
+        <div class="step-tab-panel" id="step1">
+          ...
+        </div>
+        <div class="step-tab-panel" id="step2">
+          ...
+        </div>
+        <div class="step-tab-panel" id="step3">
+          ...
+        </div>
+      </div>
+      <div class="step-footer">
+        <button data-direction="prev">Previous</button>
+        <button data-direction="next">Next</button>
+        <button data-direction="finish">Finish</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="../dist/jquery-steps.js"></script>
+  <script src="spec.js"></script>
+</body>
+</html>
