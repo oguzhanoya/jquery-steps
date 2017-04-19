@@ -6,7 +6,7 @@
 
 ## Features
 - Easy configuration
-- Lightweight (3KB gzipped)
+- Lightweight (2KB gzipped)
 - Works in all major browsers including IE11+
 
 ## Compatibility
