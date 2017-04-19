@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Lightweight jQuery step wizard plugin.</title>
+    <link href="style/normalize.css" rel="stylesheet">
+    <link href="style/style.css" rel="stylesheet">
+    <link href="./js/highlight-js/styles/github.css" rel="stylesheet">
+    <link href="../dist/jquery-steps.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,700" rel="stylesheet">
+</head>
+<body>
+    <header class="container">
+        <div class="logo-wrapper">
+            <a href="/"><img alt="logo" class="logo" src="img/logo.svg"></a>
+        </div>
+        <div class="github-btns">
+            <a class="btn" href="https://github.com/oguzhanoya" target="_blank" title="Follow @oguzhanoya on GitHub"><img alt="github" src="img/octoface.svg"> <span>Follow</span></a>
+            <a class="btn" href="https://github.com/oguzhanoya/jquery-steps" target="_blank" title="Star chmln/flatpickr on GitHub"><img alt="star" src="img/star.svg"> <span>Star!</span></a>
+            <a class="btn" href="https://github.com/oguzhanoya/jquery-steps/archive/master.zip"><img alt="download" src="img/download.svg"> <span>Download</span></a>
+        </div>
+    </header>
+    <div class="container doc-content">
+        <article class="content left">
+            <article class="section" id="intro">
+                <h1>Intro</h1>
+                <h3>Lightweight jQuery step wizard plugin.</h3>
+                <p>Tested in IE11+, Edge, Chrome, Firefox, Opera, Safari.</p>
+                <div id="demo">
+                    <div class="step-app">
+                        <ul class="step-steps">
+                            <li><a href="#step1">Step 1</a></li>
+                            <li><a href="#step2">Step 2</a></li>
+                            <li><a href="#step3">Step 3</a></li>
+                        </ul>
+                        <div class="step-content">
+                            <div class="step-tab-panel" id="step1">
+                                ...
+                            </div>
+                            <div class="step-tab-panel" id="step2">
+                                ...
+                            </div>
+                            <div class="step-tab-panel" id="step3">
+                                ...
+                            </div>
+                        </div>
+                        <div class="step-footer">
+                            <button data-direction="prev" class="step-btn">Previous</button>
+                            <button data-direction="next" class="step-btn">Next</button>
+                            <button data-direction="finish" class="step-btn">Finish</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="section" id="installation">
+                <h1>Installation</h1>
+                <h4>Bower</h4>
+                <pre><code class="bash">bower install jquery-steps</code></pre>
+                <h4>Github</h4>
+                <pre><code class="bash">git clone http://github.com/oguzhanoya/jquery-steps.git</code></pre>
+                <h4>Manually</h4>
+                <p>
+                    <a class="btn" href="https://github.com/oguzhanoya/jquery-steps/archive/gh-pages.zip"><img alt="download" src="img/download.svg"> <span>Download .zip package</span></a>
+                </p>
+            </article>
+            <article class="section" id="setup">
+                <h1>Setup</h1>
+                Include plugin stylesheets.
+                <pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;css/jquery-steps.css&quot;&gt;</code></pre>
+                <p>Make necessary markup for wizard. That's all, you don't need to do anything else.</p>
+                <pre><code class="html">&lt;div id=&quot;demo&quot;&gt;
+    &lt;div class=&quot;step-app&quot;&gt;
+        &lt;ul class=&quot;step-steps&quot;&gt;
+            &lt;li&gt;&lt;a href=&quot;#step1&quot;&gt;Step 1&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#step2&quot;&gt;Step 2&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#step3&quot;&gt;Step 3&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;step-content&quot;&gt;
+            &lt;div class=&quot;step-tab-panel&quot; id=&quot;step1&quot;&gt;
+                ...
+            &lt;/div&gt;
+            &lt;div class=&quot;step-tab-panel&quot; id=&quot;step2&quot;&gt;
+                ...
+            &lt;/div&gt;
+            &lt;div class=&quot;step-tab-panel&quot; id=&quot;step3&quot;&gt;
+                ...
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;step-footer&quot;&gt;
+            &lt;button data-direction=&quot;prev&quot;&gt;Previous&lt;/button&gt;
+            &lt;button data-direction=&quot;next&quot;&gt;Next&lt;/button&gt;
+            &lt;button data-direction=&quot;finish&quot;&gt;Finish&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                <p>Include plugin and dependeces. jQuery is the only dependency, make sure to include it.</p>
+                <pre><code class="html">&lt;script src=&quot;http://code.jquery.com/jquery-latest.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/jquery-steps.js&quot;&gt;&lt;/script&gt;</code></pre>
+                <p>Init plugin with choosen options.</p>
+                <pre><code class="xml">&lt;script&gt;
+    $('#demo').steps({
+        onFinish: function () { alert('Wizard Completed'); }
+    });
+&lt;/script&gt;</code></pre>
+            </article>
+            <article class="section" id="options">
+                <h1>Options</h1>
+                <h3>startAt</h3>
+                @default:
+                <pre class="inline"><code>0</code></pre><br>
+                @type:
+                <pre class="inline"><code>Number</code></pre><br>
+                <p>Start wizard at specifed step number.</p>
+                <hr>
+                <h3>showBackButton</h3>
+                @default:
+                <pre class="inline"><code>true</code></pre><br>
+                @type:
+                <pre class="inline"><code>Boolean</code></pre><br>
+                <p>Indicates whether the back button will be visible.</p>
+                <hr>
+                <h3>showFooterButtons</h3>
+                @default:
+                <pre class="inline"><code>true</code></pre><br>
+                @type:
+                <pre class="inline"><code>Boolean</code></pre><br>
+                <p>Indicates whether the footer buttons will be visible.</p>
+            </article>
+            <article class="section" id="events">
+                <h1>Events</h1>
+                <h3>onInit</h3>
+                @type:
+                <pre class="inline"><code>Function</code></pre><br>
+                <p>Fired when plugin is initialized</p>
+                <hr>
+                <h3>onChange</h3>
+                @param:
+                <pre class="inline"><code>Number</code></pre>
+                <pre class="inline"><code>currentIndex</code></pre><br>
+                @param:
+                <pre class="inline"><code>Number</code></pre>
+                <pre class="inline"><code>newIndex</code></pre><br>
+                @param:
+                <pre class="inline"><code>String</code></pre>
+                <pre class="inline"><code>stepDirection</code></pre><br>
+                @type:
+                <pre class="inline"><code>Function</code></pre><br>
+                <p>Fired when plugin step changed</p>
+                <hr>
+                <h3>onFinish</h3>
+                @type:
+                <pre class="inline"><code>Function</code></pre><br>
+                <p>Fired when plugin wizard finished</p>
+                <hr>
+                <h3>onDestroy</h3>
+                @type:
+                <pre class="inline"><code>Function</code></pre><br>
+                <p>Fired when plugin destroy</p>
+            </article>
+            <article class="section" id="api">
+                <h1>API</h1>
+                <h3>.getStepIndex()</h3>
+                @return:
+                <pre class="inline"><code>Number</code></pre><br>
+                <p>Returning current step number.</p>
+                <hr>
+                <h3>.destroy()</h3>
+                <p>Destroy wizard. Clear objects and bindings.</p>
+            </article>
+            <article class="section" id="license">
+                <h1>License</h1>
+                <p>The MIT License</p>
+            </article>
+            <div class="up">
+                <a class="button ghost sm" href="#header"><i class="fa fa-angle-up"></i></a>
+            </div>
+        </article>
+        <aside class="sidebar right">
+            <ul>
+                <li><a href="#intro">Intro</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#setup">Setup</a></li>
+                <li><a href="#options">Options</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#api">API</a></li>
+                <li><a href="#license">License</a></li>
+            </ul>
+        </aside>
+    </div>
+    <script src="js/jquery-3.2.0.min.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="./js/highlight-js/highlight.pack.js"></script>
+    <script src="../dist/jquery-steps.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+        $(function () {
+            $('#demo').steps({
+                onFinish: function () { alert('Wizard Completed'); }
+            });
+        });
+    </script>
+</body>
+</html>
