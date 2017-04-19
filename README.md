@@ -77,7 +77,7 @@ Init plugin with choosen options.
 |showBackButton|`true`|Indicates whether the back button will be visible.|
 |showFooterButtons|`true`|Indicates whether the footer buttons will be visible.|
 |onInit|`function(){}`|Fired when plugin is initialized|
-|onChange|`function(currentIndex, newIndex, stepDirection){return true;}`|Fired when plugin is initialized|
+|onChange|`function(currentIndex, newIndex, stepDirection){return true;}`|Fired when plugin step changed|
 |onFinish|`function(){}`|Fired when plugin wizard finished|
 |onDestroy|`function(){}`|Fired when plugin destroy|
 
