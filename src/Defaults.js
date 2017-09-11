@@ -9,5 +9,6 @@ export default {
   stepSelector: '.step-steps > li',
   contentSelector: '.step-content > .step-tab-panel',
   footerSelector: '.step-footer',
+  buttonSelector: 'button',
   activeClass: 'active',
 };

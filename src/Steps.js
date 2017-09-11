@@ -18,7 +18,7 @@ class Steps {
     const self = this;
 
     // step click event
-    $(this.el).on('click', this.options.stepSelector, function (e) {
+    $(this.el).find(this.options.stepSelector).on('click', function (e) {
       e.preventDefault();
       const nextStep = $(this).closest('li').index();
       const stepIndex = self.getStepIndex();
@@ -26,14 +26,14 @@ class Steps {
     });
 
     // button click event
-    $(this.el).on('click', $(this.options.footerSelector).add('> button'), function (e) {
+    $(this.el).find(`${this.options.footerSelector} ${this.options.buttonSelector}`).on('click', function (e) {
       e.preventDefault();
       const statusAction = $(this).data('direction');
       self.setAction(statusAction);
     });
 
     // set default step
-    this.setShowStep(this.options.startAt, '', 'active');
+    this.setShowStep(this.options.startAt, '', this.options.activeClass);
     this.setFooterBtns();
 
     // show footer buttons
@@ -90,14 +90,14 @@ class Steps {
         for (let i = 0; i <= newIndex; i += 1) {
           const lastTab = i === newIndex;
           if (lastTab) {
-            this.setShowStep(i, 'done', 'active');
+            this.setShowStep(i, 'done', this.options.activeClass);
           } else {
-            this.setShowStep(i, 'active error', 'done');
+            this.setShowStep(i, `${this.options.activeClass} error`, 'done');
           }
           const stepDirectionF = this.getStepDirection(i, newIndex);
           const validStep = this.options.onChange(i, newIndex, stepDirectionF);
           if (!validStep) {
-            this.setShowStep(i, 'done', 'error active');
+            this.setShowStep(i, 'done', `${this.options.activeClass} error`);
             this.setFooterBtns();
             break;
           }
@@ -108,9 +108,9 @@ class Steps {
         for (let i = currentIndex; i >= newIndex; i -= 1) {
           const stepDirectionB = this.getStepDirection(i, newIndex);
           this.options.onChange(i, newIndex, stepDirectionB);
-          this.setShowStep(i, 'done active error');
+          this.setShowStep(i, `done ${this.options.activeClass} error`);
           if (i === newIndex) {
-            this.setShowStep(i, 'done error', 'active');
+            this.setShowStep(i, 'done error', this.options.activeClass);
           }
         }
       }

@@ -28,6 +28,7 @@ var DEFAULTS = {
   stepSelector: '.step-steps > li',
   contentSelector: '.step-content > .step-tab-panel',
   footerSelector: '.step-footer',
+  buttonSelector: 'button',
   activeClass: 'active'
 };
 
@@ -76,7 +77,7 @@ var Steps = function () {
       var self = this;
 
       // step click event
-      $$1(this.el).on('click', this.options.stepSelector, function (e) {
+      $$1(this.el).find(this.options.stepSelector).on('click', function (e) {
         e.preventDefault();
         var nextStep = $$1(this).closest('li').index();
         var stepIndex = self.getStepIndex();
@@ -84,14 +85,14 @@ var Steps = function () {
       });
 
       // button click event
-      $$1(this.el).on('click', $$1(this.options.footerSelector).add('> button'), function (e) {
+      $$1(this.el).find(this.options.footerSelector + ' ' + this.options.buttonSelector).on('click', function (e) {
         e.preventDefault();
         var statusAction = $$1(this).data('direction');
         self.setAction(statusAction);
       });
 
       // set default step
-      this.setShowStep(this.options.startAt, '', 'active');
+      this.setShowStep(this.options.startAt, '', this.options.activeClass);
       this.setFooterBtns();
 
       // show footer buttons
@@ -155,14 +156,14 @@ var Steps = function () {
           for (var i = 0; i <= newIndex; i += 1) {
             var lastTab = i === newIndex;
             if (lastTab) {
-              this.setShowStep(i, 'done', 'active');
+              this.setShowStep(i, 'done', this.options.activeClass);
             } else {
-              this.setShowStep(i, 'active error', 'done');
+              this.setShowStep(i, this.options.activeClass + ' error', 'done');
             }
             var stepDirectionF = this.getStepDirection(i, newIndex);
             var validStep = this.options.onChange(i, newIndex, stepDirectionF);
             if (!validStep) {
-              this.setShowStep(i, 'done', 'error active');
+              this.setShowStep(i, 'done', this.options.activeClass + ' error');
               this.setFooterBtns();
               break;
             }
@@ -173,9 +174,9 @@ var Steps = function () {
           for (var _i = currentIndex; _i >= newIndex; _i -= 1) {
             var stepDirectionB = this.getStepDirection(_i, newIndex);
             this.options.onChange(_i, newIndex, stepDirectionB);
-            this.setShowStep(_i, 'done active error');
+            this.setShowStep(_i, 'done ' + this.options.activeClass + ' error');
             if (_i === newIndex) {
-              this.setShowStep(_i, 'done error', 'active');
+              this.setShowStep(_i, 'done error', this.options.activeClass);
             }
           }
         }
