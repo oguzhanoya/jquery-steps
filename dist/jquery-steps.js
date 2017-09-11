@@ -118,7 +118,7 @@ var Steps = function () {
   }, {
     key: 'getStepIndex',
     value: function getStepIndex() {
-      var stepIndex = this.el.find(this.options.stepSelector).filter(this.options.activeClass).index();
+      var stepIndex = this.el.find(this.options.stepSelector).filter('.' + this.options.activeClass).index();
       return stepIndex || 0;
     }
   }, {

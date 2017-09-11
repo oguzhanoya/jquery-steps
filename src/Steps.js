@@ -57,7 +57,7 @@ class Steps {
 
   getStepIndex() {
     const stepIndex = this.el.find(this.options.stepSelector)
-                             .filter(this.options.activeClass)
+                             .filter(`.${this.options.activeClass}`)
                              .index();
     return stepIndex || 0;
   }
