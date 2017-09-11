@@ -26,7 +26,7 @@ class Steps {
     });
 
     // button click event
-    $(this.el).on('click', this.options.footerSelector.add('> button'), function (e) {
+    $(this.el).on('click', $(this.options.footerSelector).add('> button'), function (e) {
       e.preventDefault();
       const statusAction = $(this).data('direction');
       self.setAction(statusAction);

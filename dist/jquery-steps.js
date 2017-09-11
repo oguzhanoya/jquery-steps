@@ -84,7 +84,7 @@ var Steps = function () {
       });
 
       // button click event
-      $$1(this.el).on('click', this.options.footerSelector.add('> button'), function (e) {
+      $$1(this.el).on('click', $$1(this.options.footerSelector).add('> button'), function (e) {
         e.preventDefault();
         var statusAction = $$1(this).data('direction');
         self.setAction(statusAction);
