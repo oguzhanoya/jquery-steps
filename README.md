@@ -76,6 +76,11 @@ Init plugin with choosen options.
 |startAt|`0`|Start wizard at specifed step number.|
 |showBackButton|`true`|Indicates whether the back button will be visible.|
 |showFooterButtons|`true`|Indicates whether the footer buttons will be visible.|
+|stepSelector|`.step-steps > li`|The selector used for each step.|
+|contentSelector|`.step-content > .step-tab-panel`|The selector used for the step content.|
+|footerSelector|`.step-footer`|The selector used for the buttons.|
+|buttonSelector|`button`|The selector used for the footer buttons.|
+|activeClass|`active`|The class used when a step is active.|
 |onInit|`function(){}`|Fired when plugin is initialized|
 |onChange|`function(currentIndex, newIndex, stepDirection){return true;}`|Fired when plugin step changed|
 |onFinish|`function(){}`|Fired when plugin wizard finished|
