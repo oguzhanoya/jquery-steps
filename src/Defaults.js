@@ -6,4 +6,8 @@ export default {
   onDestroy: $.noop,
   onFinish: $.noop,
   onChange() { return true; },
+  stepSelector: '.step-steps > li',
+  contentSelector: '.step-content > .step-tab-panel',
+  footerSelector: '.step-footer',
+  activeClass: 'active',
 };
