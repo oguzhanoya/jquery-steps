@@ -29,7 +29,9 @@ var DEFAULTS = {
   contentSelector: '.step-content > .step-tab-panel',
   footerSelector: '.step-footer',
   buttonSelector: 'button',
-  activeClass: 'active'
+  activeClass: 'active',
+  doneClass: 'done',
+  errorClass: 'error'
 };
 
 var classCallCheck = function (instance, Constructor) {
@@ -156,14 +158,14 @@ var Steps = function () {
           for (var i = 0; i <= newIndex; i += 1) {
             var lastTab = i === newIndex;
             if (lastTab) {
-              this.setShowStep(i, 'done', this.options.activeClass);
+              this.setShowStep(i, this.options.doneClass, this.options.activeClass);
             } else {
-              this.setShowStep(i, this.options.activeClass + ' error', 'done');
+              this.setShowStep(i, this.options.activeClass + ' ' + this.options.errorClass, this.options.doneClass);
             }
             var stepDirectionF = this.getStepDirection(i, newIndex);
             var validStep = this.options.onChange(i, newIndex, stepDirectionF);
             if (!validStep) {
-              this.setShowStep(i, 'done', this.options.activeClass + ' error');
+              this.setShowStep(i, this.options.doneClass, this.options.activeClass + ' ' + this.options.errorClass);
               this.setFooterBtns();
               break;
             }
@@ -174,9 +176,9 @@ var Steps = function () {
           for (var _i = currentIndex; _i >= newIndex; _i -= 1) {
             var stepDirectionB = this.getStepDirection(_i, newIndex);
             this.options.onChange(_i, newIndex, stepDirectionB);
-            this.setShowStep(_i, 'done ' + this.options.activeClass + ' error');
+            this.setShowStep(_i, this.options.doneClass + ' ' + this.options.activeClass + ' ' + this.options.errorClass);
             if (_i === newIndex) {
-              this.setShowStep(_i, 'done error', this.options.activeClass);
+              this.setShowStep(_i, this.options.doneClass + ' ' + this.options.errorClass, this.options.activeClass);
             }
           }
         }

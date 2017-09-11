@@ -11,4 +11,6 @@ export default {
   footerSelector: '.step-footer',
   buttonSelector: 'button',
   activeClass: 'active',
+  doneClass: 'done',
+  errorClass: 'error',
 };

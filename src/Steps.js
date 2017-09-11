@@ -90,14 +90,14 @@ class Steps {
         for (let i = 0; i <= newIndex; i += 1) {
           const lastTab = i === newIndex;
           if (lastTab) {
-            this.setShowStep(i, 'done', this.options.activeClass);
+            this.setShowStep(i, this.options.doneClass, this.options.activeClass);
           } else {
-            this.setShowStep(i, `${this.options.activeClass} error`, 'done');
+            this.setShowStep(i, `${this.options.activeClass} ${this.options.errorClass}`, this.options.doneClass);
           }
           const stepDirectionF = this.getStepDirection(i, newIndex);
           const validStep = this.options.onChange(i, newIndex, stepDirectionF);
           if (!validStep) {
-            this.setShowStep(i, 'done', `${this.options.activeClass} error`);
+            this.setShowStep(i, this.options.doneClass, `${this.options.activeClass} ${this.options.errorClass}`);
             this.setFooterBtns();
             break;
           }
@@ -108,9 +108,9 @@ class Steps {
         for (let i = currentIndex; i >= newIndex; i -= 1) {
           const stepDirectionB = this.getStepDirection(i, newIndex);
           this.options.onChange(i, newIndex, stepDirectionB);
-          this.setShowStep(i, `done ${this.options.activeClass} error`);
+          this.setShowStep(i, `${this.options.doneClass} ${this.options.activeClass} ${this.options.errorClass}`);
           if (i === newIndex) {
-            this.setShowStep(i, 'done error', this.options.activeClass);
+            this.setShowStep(i, `${this.options.doneClass} ${this.options.errorClass}`, this.options.activeClass);
           }
         }
       }
