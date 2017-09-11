@@ -81,6 +81,8 @@ Init plugin with choosen options.
 |footerSelector|`.step-footer`|The selector used for the buttons.|
 |buttonSelector|`button`|The selector used for the footer buttons.|
 |activeClass|`active`|The class used when a step is active.|
+|doneClass|`done`|The class used when a step is done.|
+|errorClass|`error`|The class used when an error occurs in a step.|
 |onInit|`function(){}`|Fired when plugin is initialized|
 |onChange|`function(currentIndex, newIndex, stepDirection){return true;}`|Fired when plugin step changed|
 |onFinish|`function(){}`|Fired when plugin wizard finished|
