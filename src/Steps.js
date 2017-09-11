@@ -18,7 +18,7 @@ class Steps {
     const self = this;
 
     // step click event
-    $(this.el).on('click', '.step-steps > li > a', function (e) {
+    $(this.el).find(this.options.stepSelector).on('click', function (e) {
       e.preventDefault();
       const nextStep = $(this).closest('li').index();
       const stepIndex = self.getStepIndex();
@@ -26,14 +26,14 @@ class Steps {
     });
 
     // button click event
-    $(this.el).on('click', '.step-footer > button', function (e) {
+    $(this.el).find(`${this.options.footerSelector} ${this.options.buttonSelector}`).on('click', function (e) {
       e.preventDefault();
       const statusAction = $(this).data('direction');
       self.setAction(statusAction);
     });
 
     // set default step
-    this.setShowStep(this.options.startAt, '', 'active');
+    this.setShowStep(this.options.startAt, '', this.options.activeClass);
     this.setFooterBtns();
 
     // show footer buttons
@@ -56,12 +56,14 @@ class Steps {
   }
 
   getStepIndex() {
-    const stepIndex = this.el.find('.step-steps > li.active').index();
+    const stepIndex = this.el.find(this.options.stepSelector)
+                             .filter(`.${this.options.activeClass}`)
+                             .index();
     return stepIndex || 0;
   }
 
   getMaxStepCount() {
-    return this.el.find('.step-steps > li').length - 1;
+    return this.el.find(this.options.stepSelector).length - 1;
   }
 
   getStepDirection(stepIndex, newIndex) {
@@ -75,11 +77,11 @@ class Steps {
   }
 
   setShowStep(idx, removeClass, addClass = '') {
-    this.el.find('.step-content > .step-tab-panel').removeClass('active');
-    const $prevStep = this.el.find('.step-steps > li').eq(idx);
+    this.el.find(this.options.contentSelector).removeClass(this.options.activeClass);
+    const $prevStep = this.el.find(this.options.stepSelector).eq(idx);
     $prevStep.removeClass(removeClass).addClass(addClass);
     const targetStep = $prevStep.find('a').attr('href');
-    $(targetStep).addClass('active');
+    $(targetStep).addClass(this.options.activeClass);
   }
 
   setActiveStep(currentIndex, newIndex) {
@@ -88,14 +90,14 @@ class Steps {
         for (let i = 0; i <= newIndex; i += 1) {
           const lastTab = i === newIndex;
           if (lastTab) {
-            this.setShowStep(i, 'done', 'active');
+            this.setShowStep(i, this.options.doneClass, this.options.activeClass);
           } else {
-            this.setShowStep(i, 'active error', 'done');
+            this.setShowStep(i, `${this.options.activeClass} ${this.options.errorClass}`, this.options.doneClass);
           }
           const stepDirectionF = this.getStepDirection(i, newIndex);
           const validStep = this.options.onChange(i, newIndex, stepDirectionF);
           if (!validStep) {
-            this.setShowStep(i, 'done', 'error active');
+            this.setShowStep(i, this.options.doneClass, `${this.options.activeClass} ${this.options.errorClass}`);
             this.setFooterBtns();
             break;
           }
@@ -106,9 +108,9 @@ class Steps {
         for (let i = currentIndex; i >= newIndex; i -= 1) {
           const stepDirectionB = this.getStepDirection(i, newIndex);
           this.options.onChange(i, newIndex, stepDirectionB);
-          this.setShowStep(i, 'done active error');
+          this.setShowStep(i, `${this.options.doneClass} ${this.options.activeClass} ${this.options.errorClass}`);
           if (i === newIndex) {
-            this.setShowStep(i, 'done error', 'active');
+            this.setShowStep(i, `${this.options.doneClass} ${this.options.errorClass}`, this.options.activeClass);
           }
         }
       }
@@ -120,7 +122,7 @@ class Steps {
   setFooterBtns() {
     const stepIndex = this.getStepIndex();
     const maxIndex = this.getMaxStepCount();
-    const $footer = this.el.find('.step-footer');
+    const $footer = this.el.find(this.options.footerSelector);
 
     if (stepIndex === 0) {
       $footer.find('button[data-direction="prev"]').hide();
@@ -161,7 +163,7 @@ class Steps {
   }
 
   hideFooterBtns() {
-    this.el.find('.step-footer').hide();
+    this.el.find(this.options.footerSelector).hide();
   }
 
   static setDefaults(options) {
