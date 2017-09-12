@@ -261,7 +261,7 @@ $$1.fn.steps = function (options) {
   });
 };
 
-$$1.fn.steps.version = '1.0.0';
+$$1.fn.steps.version = '1.0.1';
 $$1.fn.steps.setDefaults = Steps.setDefaults;
 
 // No conflict
