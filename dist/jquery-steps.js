@@ -1,5 +1,5 @@
 /*!
-   * Steps v1.0.0
+   * Steps v1.0.1
    * https://github.com/oguzhanoya/jquery-steps
    *
    * Copyright (c) 2017 oguzhanoya
@@ -23,7 +23,15 @@ var DEFAULTS = {
   onFinish: $.noop,
   onChange: function onChange() {
     return true;
-  }
+  },
+
+  stepSelector: '.step-steps > li',
+  contentSelector: '.step-content > .step-tab-panel',
+  footerSelector: '.step-footer',
+  buttonSelector: 'button',
+  activeClass: 'active',
+  doneClass: 'done',
+  errorClass: 'error'
 };
 
 var classCallCheck = function (instance, Constructor) {
@@ -71,7 +79,7 @@ var Steps = function () {
       var self = this;
 
       // step click event
-      $$1(this.el).on('click', '.step-steps > li > a', function (e) {
+      $$1(this.el).find(this.options.stepSelector).on('click', function (e) {
         e.preventDefault();
         var nextStep = $$1(this).closest('li').index();
         var stepIndex = self.getStepIndex();
@@ -79,14 +87,14 @@ var Steps = function () {
       });
 
       // button click event
-      $$1(this.el).on('click', '.step-footer > button', function (e) {
+      $$1(this.el).find(this.options.footerSelector + ' ' + this.options.buttonSelector).on('click', function (e) {
         e.preventDefault();
         var statusAction = $$1(this).data('direction');
         self.setAction(statusAction);
       });
 
       // set default step
-      this.setShowStep(this.options.startAt, '', 'active');
+      this.setShowStep(this.options.startAt, '', this.options.activeClass);
       this.setFooterBtns();
 
       // show footer buttons
@@ -112,13 +120,13 @@ var Steps = function () {
   }, {
     key: 'getStepIndex',
     value: function getStepIndex() {
-      var stepIndex = this.el.find('.step-steps > li.active').index();
+      var stepIndex = this.el.find(this.options.stepSelector).filter('.' + this.options.activeClass).index();
       return stepIndex || 0;
     }
   }, {
     key: 'getMaxStepCount',
     value: function getMaxStepCount() {
-      return this.el.find('.step-steps > li').length - 1;
+      return this.el.find(this.options.stepSelector).length - 1;
     }
   }, {
     key: 'getStepDirection',
@@ -136,11 +144,11 @@ var Steps = function () {
     value: function setShowStep(idx, removeClass) {
       var addClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
-      this.el.find('.step-content > .step-tab-panel').removeClass('active');
-      var $prevStep = this.el.find('.step-steps > li').eq(idx);
+      this.el.find(this.options.contentSelector).removeClass(this.options.activeClass);
+      var $prevStep = this.el.find(this.options.stepSelector).eq(idx);
       $prevStep.removeClass(removeClass).addClass(addClass);
       var targetStep = $prevStep.find('a').attr('href');
-      $$1(targetStep).addClass('active');
+      $$1(targetStep).addClass(this.options.activeClass);
     }
   }, {
     key: 'setActiveStep',
@@ -150,14 +158,14 @@ var Steps = function () {
           for (var i = 0; i <= newIndex; i += 1) {
             var lastTab = i === newIndex;
             if (lastTab) {
-              this.setShowStep(i, 'done', 'active');
+              this.setShowStep(i, this.options.doneClass, this.options.activeClass);
             } else {
-              this.setShowStep(i, 'active error', 'done');
+              this.setShowStep(i, this.options.activeClass + ' ' + this.options.errorClass, this.options.doneClass);
             }
             var stepDirectionF = this.getStepDirection(i, newIndex);
             var validStep = this.options.onChange(i, newIndex, stepDirectionF);
             if (!validStep) {
-              this.setShowStep(i, 'done', 'error active');
+              this.setShowStep(i, this.options.doneClass, this.options.activeClass + ' ' + this.options.errorClass);
               this.setFooterBtns();
               break;
             }
@@ -168,9 +176,9 @@ var Steps = function () {
           for (var _i = currentIndex; _i >= newIndex; _i -= 1) {
             var stepDirectionB = this.getStepDirection(_i, newIndex);
             this.options.onChange(_i, newIndex, stepDirectionB);
-            this.setShowStep(_i, 'done active error');
+            this.setShowStep(_i, this.options.doneClass + ' ' + this.options.activeClass + ' ' + this.options.errorClass);
             if (_i === newIndex) {
-              this.setShowStep(_i, 'done error', 'active');
+              this.setShowStep(_i, this.options.doneClass + ' ' + this.options.errorClass, this.options.activeClass);
             }
           }
         }
@@ -183,7 +191,7 @@ var Steps = function () {
     value: function setFooterBtns() {
       var stepIndex = this.getStepIndex();
       var maxIndex = this.getMaxStepCount();
-      var $footer = this.el.find('.step-footer');
+      var $footer = this.el.find(this.options.footerSelector);
 
       if (stepIndex === 0) {
         $footer.find('button[data-direction="prev"]').hide();
@@ -232,7 +240,7 @@ var Steps = function () {
   }, {
     key: 'hideFooterBtns',
     value: function hideFooterBtns() {
-      this.el.find('.step-footer').hide();
+      this.el.find(this.options.footerSelector).hide();
     }
   }], [{
     key: 'setDefaults',
