@@ -13,9 +13,9 @@
 IE11+, Edge, Chrome, Firefox, Opera, Safari
 
 ## Installation
-Bower
+NPM
 ```sh
-bower install jquery-steps
+npm install jquery.steps
 ```
 Github
 ```sh

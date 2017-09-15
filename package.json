@@ -1,9 +1,15 @@
 {
-  "name": "jquery-steps",
+  "name": "jquery.steps",
   "version": "1.0.1",
   "description": "A simple, lightweight jQuery step wizard plugin.",
-  "main": "index.js",
-  "repository": "oguzhanoya/jquery-steps",
+  "main": "./dist/jquery-steps.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oguzhanoya/jquery-steps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oguzhanoya/jquery-steps/issues"
+  },
   "homepage": "https://oguzhanoya.github.io/jquery-steps",
   "scripts": {
     "build:css": "stylus src/styl/jquery-steps.styl -m -o dist/",
