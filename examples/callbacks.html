@@ -78,42 +78,34 @@
 
     $('#demo').steps({
       onChange: function (currentIndex, newIndex, stepDirection) {
-        console.log('onChange', currentIndex, newIndex, stepDirection);
-        // tab1
-        if (currentIndex === 3) {
-          if (stepDirection === 'forward') {
-            var valid = frmLogin.valid();
-            return valid;
-          }
-          if (stepDirection === 'backward') {
-            frmLoginValidator.resetForm();
-          }
-        }
-
-        // tab2
+        // step2
         if (currentIndex === 1) {
           if (stepDirection === 'forward') {
-            var valid = frmInfo.valid();
-            return valid;
+            return frmInfo.valid();
           }
           if (stepDirection === 'backward') {
             frmInfoValidator.resetForm();
           }
         }
-
-        // tab3
+        // step4
+        if (currentIndex === 3) {
+          if (stepDirection === 'forward') {
+            return frmLogin.valid();
+          }
+          if (stepDirection === 'backward') {
+            frmLoginValidator.resetForm();
+          }
+        }
+        // step5
         if (currentIndex === 4) {
           if (stepDirection === 'forward') {
-            var valid = frmMobile.valid();
-            return valid;
+            return frmMobile.valid();
           }
           if (stepDirection === 'backward') {
             frmMobileValidator.resetForm();
           }
         }
-
         return true;
-
       },
       onFinish: function () {
         alert('Wizard Completed');
