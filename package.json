@@ -26,8 +26,8 @@
   "license": "MIT",
   "devDependencies": {
     "babel-preset-es2015-rollup": "^3.0.0",
-    "eslint": "^4.18.2",
-    "eslint-config-airbnb-base": "^11.1.2",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1",
