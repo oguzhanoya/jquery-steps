@@ -57,8 +57,8 @@ class Steps {
 
   getStepIndex() {
     const stepIndex = this.el.find(this.options.stepSelector)
-                             .filter(`.${this.options.activeClass}`)
-                             .index();
+      .filter(`.${this.options.activeClass}`)
+      .index();
     return stepIndex || 0;
   }
 
@@ -184,7 +184,6 @@ class Steps {
   static setDefaults(options) {
     $.extend(DEFAULTS, $.isPlainObject(options) && options);
   }
-
 }
 
 export default Steps;
