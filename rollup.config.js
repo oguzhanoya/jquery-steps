@@ -24,7 +24,7 @@ module.exports = {
   sourceMap: true,
   banner: `/*!
    * Steps v${pkg.version}
-   * https://github.com/${pkg.repository}
+   * ${pkg.repository.url.replace('.git', '')}
    *
    * Copyright (c) ${now.getFullYear()} ${pkg.author}
    * Released under the ${pkg.license} license

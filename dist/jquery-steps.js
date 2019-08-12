@@ -1,8 +1,8 @@
 /*!
-   * Steps v1.0.1
+   * Steps v1.0.2
    * https://github.com/oguzhanoya/jquery-steps
    *
-   * Copyright (c) 2017 oguzhanoya
+   * Copyright (c) 2019 oguzhanoya
    * Released under the MIT license
    */
   
@@ -238,6 +238,24 @@ var Steps = function () {
       }
     }
   }, {
+    key: 'next',
+    value: function next() {
+      var stepIndex = this.getStepIndex();
+      var maxIndex = this.getMaxStepCount();
+      return maxIndex === stepIndex ? this.setAction('finish') : this.setAction('next');
+    }
+  }, {
+    key: 'prev',
+    value: function prev() {
+      var stepIndex = this.getStepIndex();
+      return stepIndex !== 0 && this.setAction('prev');
+    }
+  }, {
+    key: 'finish',
+    value: function finish() {
+      this.hook('onFinish');
+    }
+  }, {
     key: 'hideFooterBtns',
     value: function hideFooterBtns() {
       this.el.find(this.options.footerSelector).hide();
@@ -261,7 +279,7 @@ $$1.fn.steps = function (options) {
   });
 };
 
-$$1.fn.steps.version = '1.0.1';
+$$1.fn.steps.version = '1.0.2';
 $$1.fn.steps.setDefaults = Steps.setDefaults;
 
 // No conflict

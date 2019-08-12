@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Destroy</title>
+  <title>Navigation</title>
   <link rel="stylesheet" href="../dist/jquery-steps.css">
   <!-- Demo stylesheet -->
 	<link rel="stylesheet" href="css/style.css">
@@ -37,21 +37,30 @@
       </div>
   </div>
 
-  <button id="btnDestroy">Destroy</button>
+  <button id="btnPrev">Prev</button>
+  <button id="btnNext">Next</button>
+  <button id="btnFinish">Finish</button>
 
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="../dist/jquery-steps.js"></script>
   <script>
     var steps = $('#demo').steps({
-      onDestroy: function(){
-        alert('plugin destroyed');
+      onFinish: function () {
+        alert('Wizard Completed');
       }
     });
     steps_api = steps.data('plugin_Steps');
 
-    $('#btnDestroy').on('click', function (e) {
-      e.preventDefault();
-      steps_api.destroy();
+    $('#btnPrev').on('click', function () {
+      steps_api.prev();
+		});
+
+    $('#btnNext').on('click', function () {
+      steps_api.next();
+		});
+
+    $('#btnFinish').on('click', function () {
+      steps_api.finish();
 		});
 	</script>
 </body>

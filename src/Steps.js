@@ -162,6 +162,21 @@ class Steps {
     if (action !== 'finish') { this.setActiveStep(stepIndex, nextStep); }
   }
 
+  next() {
+    const stepIndex = this.getStepIndex();
+    const maxIndex = this.getMaxStepCount();
+    return maxIndex === stepIndex ? this.setAction('finish') : this.setAction('next');
+  }
+
+  prev() {
+    const stepIndex = this.getStepIndex();
+    return stepIndex !== 0 && this.setAction('prev');
+  }
+
+  finish() {
+    this.hook('onFinish');
+  }
+
   hideFooterBtns() {
     this.el.find(this.options.footerSelector).hide();
   }

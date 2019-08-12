@@ -88,6 +88,16 @@ Init plugin with choosen options.
 |onFinish|`function(){}`|Fired when plugin wizard finished|
 |onDestroy|`function(){}`|Fired when plugin destroy|
 
+## Methods
+
+|Name|Description|
+|---|---|
+|destory|Destroy the plugin instance|
+|next|Go to the next step.|
+|prev|Go to the previous step.|
+|finish|Trigger the onFinish event.|
+|getStepIndex|Gets the current step index.(start from 0)|
+
 ## License
 
 MIT
