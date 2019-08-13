@@ -25,14 +25,15 @@
   "author": "oguzhanoya",
   "license": "MIT",
   "devDependencies": {
-    "babel-preset-es2015-rollup": "^3.0.0",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "rollup": "^0.41.6",
-    "rollup-plugin-babel": "^2.7.1",
+    "rollup": "^1.19.4",
+    "rollup-plugin-babel": "^4.3.3",
     "stylus": "^0.54.5",
-    "uglify-js": "^2.8.21"
+    "uglify-js": "^3.6.0"
   },
   "dependencies": {
     "jquery": "^3.4.1"
