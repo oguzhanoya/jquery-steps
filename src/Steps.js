@@ -31,10 +31,10 @@ class Steps {
     const self = this;
 
     // step click event
-    $(this.el).find(this.options.stepSelector).on('click', { self: self }, this.stepClick);
+    $(this.el).find(this.options.stepSelector).on('click', { self }, this.stepClick);
 
     // button click event
-    $(this.el).find(`${this.options.footerSelector} ${this.options.buttonSelector}`).on('click', { self: self }, this.btnClick);
+    $(this.el).find(`${this.options.footerSelector} ${this.options.buttonSelector}`).on('click', { self }, this.btnClick);
 
     // set default step
     this.setShowStep(this.options.startAt, '', this.options.activeClass);
