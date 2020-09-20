@@ -2,7 +2,7 @@
     * Steps v1.0.2
     * https://github.com/oguzhanoya/jquery-steps
     *
-    * Copyright (c) 2019 oguzhanoya
+    * Copyright (c) 2020 oguzhanoya
     * Released under the MIT license
     */
     
@@ -70,23 +70,33 @@
     }
 
     _createClass(Steps, [{
+      key: "stepClick",
+      value: function stepClick(e) {
+        e.preventDefault();
+        var nextStep = $$1(this).closest('li').index();
+        var stepIndex = e.data.self.getStepIndex();
+        e.data.self.setActiveStep(stepIndex, nextStep);
+      }
+    }, {
+      key: "btnClick",
+      value: function btnClick(e) {
+        e.preventDefault();
+        var statusAction = $$1(this).data('direction');
+        e.data.self.setAction(statusAction);
+      }
+    }, {
       key: "init",
       value: function init() {
         this.hook('onInit');
         var self = this; // step click event
 
-        $$1(this.el).find(this.options.stepSelector).on('click', function (e) {
-          e.preventDefault();
-          var nextStep = $$1(this).closest('li').index();
-          var stepIndex = self.getStepIndex();
-          self.setActiveStep(stepIndex, nextStep);
-        }); // button click event
+        $$1(this.el).find(this.options.stepSelector).on('click', {
+          self: self
+        }, this.stepClick); // button click event
 
-        $$1(this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).on('click', function (e) {
-          e.preventDefault();
-          var statusAction = $$1(this).data('direction');
-          self.setAction(statusAction);
-        }); // set default step
+        $$1(this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).on('click', {
+          self: self
+        }, this.btnClick); // set default step
 
         this.setShowStep(this.options.startAt, '', this.options.activeClass);
         this.setFooterBtns(); // show footer buttons
@@ -106,7 +116,8 @@
     }, {
       key: "destroy",
       value: function destroy() {
-        this.el.empty();
+        $$1(this.el).find(this.options.stepSelector).off('click', this.stepClick);
+        $$1(this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).off('click', this.btnClick);
         this.el.removeData('plugin_Steps');
         this.hook('onDestroy');
       }
@@ -172,11 +183,19 @@
           if (currentIndex > newIndex) {
             for (var _i = currentIndex; _i >= newIndex; _i -= 1) {
               var stepDirectionB = this.getStepDirection(_i, newIndex);
-              this.options.onChange(_i, newIndex, stepDirectionB);
+
+              var _validStep = this.options.onChange(_i, newIndex, stepDirectionB);
+
               this.setShowStep(_i, "".concat(this.options.doneClass, " ").concat(this.options.activeClass, " ").concat(this.options.errorClass));
 
               if (_i === newIndex) {
                 this.setShowStep(_i, "".concat(this.options.doneClass, " ").concat(this.options.errorClass), this.options.activeClass);
+              }
+
+              if (!_validStep) {
+                this.setShowStep(_i, this.options.doneClass, "".concat(this.options.activeClass, " ").concat(this.options.errorClass));
+                this.setFooterBtns();
+                break;
               }
             }
           }
