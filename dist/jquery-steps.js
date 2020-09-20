@@ -1,5 +1,5 @@
 /*!
-    * Steps v1.0.2
+    * Steps v1.0.3
     * https://github.com/oguzhanoya/jquery-steps
     *
     * Copyright (c) 2020 oguzhanoya
@@ -9,10 +9,12 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
   typeof define === 'function' && define.amd ? define(['jquery'], factory) :
-  (global = global || self, factory(global.$));
-}(this, function ($$1) { 'use strict';
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.$));
+}(this, (function ($$1) { 'use strict';
 
-  $$1 = $$1 && $$1.hasOwnProperty('default') ? $$1['default'] : $$1;
+  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  var $__default = /*#__PURE__*/_interopDefaultLegacy($$1);
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -55,16 +57,14 @@
     errorClass: 'error'
   };
 
-  var Steps =
-  /*#__PURE__*/
-  function () {
+  var Steps = /*#__PURE__*/function () {
     function Steps(element, options) {
       _classCallCheck(this, Steps);
 
       // Extend defaults with the init options.
-      this.options = $$1.extend({}, DEFAULTS, options); // Store main DOM element.
+      this.options = $__default['default'].extend({}, DEFAULTS, options); // Store main DOM element.
 
-      this.el = $$1(element); // Initialize
+      this.el = $__default['default'](element); // Initialize
 
       this.init();
     }
@@ -73,7 +73,7 @@
       key: "stepClick",
       value: function stepClick(e) {
         e.preventDefault();
-        var nextStep = $$1(this).closest('li').index();
+        var nextStep = $__default['default'](this).closest('li').index();
         var stepIndex = e.data.self.getStepIndex();
         e.data.self.setActiveStep(stepIndex, nextStep);
       }
@@ -81,7 +81,7 @@
       key: "btnClick",
       value: function btnClick(e) {
         e.preventDefault();
-        var statusAction = $$1(this).data('direction');
+        var statusAction = $__default['default'](this).data('direction');
         e.data.self.setAction(statusAction);
       }
     }, {
@@ -90,11 +90,11 @@
         this.hook('onInit');
         var self = this; // step click event
 
-        $$1(this.el).find(this.options.stepSelector).on('click', {
+        $__default['default'](this.el).find(this.options.stepSelector).on('click', {
           self: self
         }, this.stepClick); // button click event
 
-        $$1(this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).on('click', {
+        $__default['default'](this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).on('click', {
           self: self
         }, this.btnClick); // set default step
 
@@ -103,7 +103,7 @@
 
         if (!this.options.showFooterButtons) {
           this.hideFooterBtns();
-          this.setFooterBtns = $$1.noop;
+          this.setFooterBtns = $__default['default'].noop;
         }
       }
     }, {
@@ -116,8 +116,8 @@
     }, {
       key: "destroy",
       value: function destroy() {
-        $$1(this.el).find(this.options.stepSelector).off('click', this.stepClick);
-        $$1(this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).off('click', this.btnClick);
+        $__default['default'](this.el).find(this.options.stepSelector).off('click', this.stepClick);
+        $__default['default'](this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).off('click', this.btnClick);
         this.el.removeData('plugin_Steps');
         this.hook('onDestroy');
       }
@@ -153,7 +153,7 @@
         var $prevStep = this.el.find(this.options.stepSelector).eq(idx);
         $prevStep.removeClass(removeClass).addClass(addClass);
         var targetStep = $prevStep.find('a').attr('href');
-        $$1(targetStep).addClass(this.options.activeClass);
+        $__default['default'](targetStep).addClass(this.options.activeClass);
       }
     }, {
       key: "setActiveStep",
@@ -285,30 +285,30 @@
     }], [{
       key: "setDefaults",
       value: function setDefaults(options) {
-        $$1.extend(DEFAULTS, $$1.isPlainObject(options) && options);
+        $__default['default'].extend(DEFAULTS, $__default['default'].isPlainObject(options) && options);
       }
     }]);
 
     return Steps;
   }();
 
-  var other = $$1.fn.steps;
+  var other = $__default['default'].fn.steps;
 
-  $$1.fn.steps = function (options) {
+  $__default['default'].fn.steps = function (options) {
     return this.each(function () {
-      if (!$$1.data(this, 'plugin_Steps')) {
-        $$1.data(this, 'plugin_Steps', new Steps(this, options));
+      if (!$__default['default'].data(this, 'plugin_Steps')) {
+        $__default['default'].data(this, 'plugin_Steps', new Steps(this, options));
       }
     });
   };
 
-  $$1.fn.steps.version = '1.0.2';
-  $$1.fn.steps.setDefaults = Steps.setDefaults; // No conflict
+  $__default['default'].fn.steps.version = '1.0.2';
+  $__default['default'].fn.steps.setDefaults = Steps.setDefaults; // No conflict
 
-  $$1.fn.steps.noConflict = function () {
-    $$1.fn.steps = other;
+  $__default['default'].fn.steps.noConflict = function () {
+    $__default['default'].fn.steps = other;
     return this;
   };
 
-}));
+})));
 //# sourceMappingURL=jquery-steps.js.map

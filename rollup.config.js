@@ -27,7 +27,7 @@ export default {
     babel({
       exclude: 'node_modules/**',
       presets: ['@babel/preset-env'],
-      babelrc: false
-    })
+      babelrc: false,
+    }),
   ],
 };
