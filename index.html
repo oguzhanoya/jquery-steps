@@ -19,7 +19,7 @@
         <div class="github-btns">
             <a class="btn" href="https://github.com/oguzhanoya" target="_blank" title="Follow @oguzhanoya on GitHub"><img alt="github" src="img/octoface.svg"> <span>Follow</span></a>
             <a class="btn" href="https://github.com/oguzhanoya/jquery-steps" target="_blank" title="Star chmln/flatpickr on GitHub"><img alt="star" src="img/star.svg"> <span>Star!</span></a>
-            <a class="btn" href="https://github.com/oguzhanoya/jquery-steps/archive/master.zip"><img alt="download" src="img/download.svg"> <span>Download</span></a>
+            <a class="btn" href="https://github.com/oguzhanoya/jquery-steps/releases"><img alt="download" src="img/download.svg"> <span>Download</span></a>
         </div>
     </header>
     <div class="container doc-content">
@@ -28,38 +28,39 @@
                 <h1>Intro</h1>
                 <h3>Lightweight jQuery step wizard plugin.</h3>
                 <p>Tested in IE11+, Edge, Chrome, Firefox, Opera, Safari.</p>
-                <div id="demo">
-                    <div class="step-app">
-                        <ul class="step-steps">
-                            <li><a href="#step1">Step 1</a></li>
-                            <li><a href="#step2">Step 2</a></li>
-                            <li><a href="#step3">Step 3</a></li>
-                        </ul>
-                        <div class="step-content">
-                            <div class="step-tab-panel" id="step1">
-                                ...
-                            </div>
-                            <div class="step-tab-panel" id="step2">
-                                ...
-                            </div>
-                            <div class="step-tab-panel" id="step3">
-                                ...
-                            </div>
-                        </div>
-                        <div class="step-footer">
-                            <button data-direction="prev" class="step-btn">Previous</button>
-                            <button data-direction="next" class="step-btn">Next</button>
-                            <button data-direction="finish" class="step-btn">Finish</button>
-                        </div>
-                    </div>
+              <div class="step-app" id="demo">
+                <ul class="step-steps">
+                  <li data-step-target="step1">Step 1</li>
+                  <li data-step-target="step2">Step 2</li>
+                  <li data-step-target="step3">Step 3</li>
+                </ul>
+                <div class="step-content">
+                  <div class="step-tab-panel" data-step="step1">
+                    ...
+                  </div>
+                  <div class="step-tab-panel" data-step="step2">
+                    ...
+                  </div>
+                  <div class="step-tab-panel" data-step="step3">
+                    ...
+                  </div>
                 </div>
+                <div class="step-footer">
+                  <button data-step-action="prev" class="step-btn">Previous</button>
+                  <button data-step-action="next" class="step-btn">Next</button>
+                  <button data-step-action="finish" class="step-btn">Finish</button>
+                </div>
+              </div>
             </article>
             <article class="section" id="installation">
                 <h1>Installation</h1>
-                <h4>Bower</h4>
-                <pre><code class="bash">bower install jquery-steps</code></pre>
+                <h4>NPM</h4>
+                <pre><code class="bash">npm install jquery.steps</code></pre>
                 <h4>Github</h4>
                 <pre><code class="bash">git clone http://github.com/oguzhanoya/jquery-steps.git</code></pre>
+                <h4>CDN</h4>
+                <pre><code class="html">&#x3C;link rel=&#x22;stylesheet&#x22; href=&#x22;https://cdn.jsdelivr.net/npm/jquery.steps@1.1.0/dist/jquery-steps.min.css&#x22;&#x3E;
+&#x3C;script src=&#x22;https://cdn.jsdelivr.net/npm/jquery.steps@1.1.0/dist/jquery-steps.min.js&#x22;&#x3E;&#x3C;/script&#x3E;</code></pre>
                 <h4>Manually</h4>
                 <p>
                     <a class="btn" href="https://github.com/oguzhanoya/jquery-steps/archive/master.zip"><img alt="download" src="img/download.svg"> <span>Download .zip package</span></a>
@@ -70,40 +71,38 @@
                 Include plugin stylesheets.
                 <pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;css/jquery-steps.css&quot;&gt;</code></pre>
                 <p>Make necessary markup for wizard. That's all, you don't need to do anything else.</p>
-                <pre><code class="html">&lt;div id=&quot;demo&quot;&gt;
-    &lt;div class=&quot;step-app&quot;&gt;
-        &lt;ul class=&quot;step-steps&quot;&gt;
-            &lt;li&gt;&lt;a href=&quot;#step1&quot;&gt;Step 1&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&quot;#step2&quot;&gt;Step 2&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&quot;#step3&quot;&gt;Step 3&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;div class=&quot;step-content&quot;&gt;
-            &lt;div class=&quot;step-tab-panel&quot; id=&quot;step1&quot;&gt;
-                ...
-            &lt;/div&gt;
-            &lt;div class=&quot;step-tab-panel&quot; id=&quot;step2&quot;&gt;
-                ...
-            &lt;/div&gt;
-            &lt;div class=&quot;step-tab-panel&quot; id=&quot;step3&quot;&gt;
-                ...
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;step-footer&quot;&gt;
-            &lt;button data-direction=&quot;prev&quot;&gt;Previous&lt;/button&gt;
-            &lt;button data-direction=&quot;next&quot;&gt;Next&lt;/button&gt;
-            &lt;button data-direction=&quot;finish&quot;&gt;Finish&lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</code></pre>
+                <pre><code class="html">&#x3C;div class=&#x22;step-app&#x22; id=&#x22;demo&#x22;&#x3E;
+  &#x3C;ul class=&#x22;step-steps&#x22;&#x3E;
+    &#x3C;li data-step-target=&#x22;step1&#x22;&#x3E;Step 1&#x3C;/li&#x3E;
+    &#x3C;li data-step-target=&#x22;step2&#x22;&#x3E;Step 2&#x3C;/li&#x3E;
+    &#x3C;li data-step-target=&#x22;step3&#x22;&#x3E;Step 3&#x3C;/li&#x3E;
+  &#x3C;/ul&#x3E;
+  &#x3C;div class=&#x22;step-content&#x22;&#x3E;
+    &#x3C;div class=&#x22;step-tab-panel&#x22; data-step=&#x22;step1&#x22;&#x3E;
+      ...
+    &#x3C;/div&#x3E;
+    &#x3C;div class=&#x22;step-tab-panel&#x22; data-step=&#x22;step2&#x22;&#x3E;
+      ...
+    &#x3C;/div&#x3E;
+    &#x3C;div class=&#x22;step-tab-panel&#x22; data-step=&#x22;step3&#x22;&#x3E;
+      ...
+    &#x3C;/div&#x3E;
+  &#x3C;/div&#x3E;
+  &#x3C;div class=&#x22;step-footer&#x22;&#x3E;
+    &#x3C;button data-step-action=&#x22;prev&#x22; class=&#x22;step-btn&#x22;&#x3E;Previous&#x3C;/button&#x3E;
+    &#x3C;button data-step-action=&#x22;next&#x22; class=&#x22;step-btn&#x22;&#x3E;Next&#x3C;/button&#x3E;
+    &#x3C;button data-step-action=&#x22;finish&#x22; class=&#x22;step-btn&#x22;&#x3E;Finish&#x3C;/button&#x3E;
+  &#x3C;/div&#x3E;
+&#x3C;/div&#x3E;</code></pre>
                 <p>Include plugin and dependeces. jQuery is the only dependency, make sure to include it.</p>
                 <pre><code class="html">&lt;script src=&quot;http://code.jquery.com/jquery-latest.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;js/jquery-steps.js&quot;&gt;&lt;/script&gt;</code></pre>
                 <p>Init plugin with choosen options.</p>
-                <pre><code class="xml">&lt;script&gt;
-    $('#demo').steps({
-        onFinish: function () { alert('Wizard Completed'); }
-    });
-&lt;/script&gt;</code></pre>
+                <pre><code class="html">&#x3C;script&#x3E;
+  $(&#x27;#demo&#x27;).steps({
+    onFinish: function () { alert(&#x27;complete&#x27;); }
+  });
+&#x3C;/script&#x3E;</code></pre>
             </article>
             <article class="section" id="options">
                 <h1>Options</h1>
@@ -112,7 +111,7 @@
                 <pre class="inline"><code>0</code></pre><br>
                 @type:
                 <pre class="inline"><code>Number</code></pre><br>
-                <p>Start wizard at specifed step number.</p>
+                <p>Starts wizard at specifed step number.</p>
                 <hr>
                 <h3>showBackButton</h3>
                 @default:
@@ -127,6 +126,48 @@
                 @type:
                 <pre class="inline"><code>Boolean</code></pre><br>
                 <p>Indicates whether the footer buttons will be visible.</p>
+                <hr>
+                <h3>stepSelector</h3>
+                @default:
+                <pre class="inline"><code>'.step-steps'</code></pre><br>
+                @type:
+                <pre class="inline"><code>String</code></pre><br>
+                <p>The selector used for each step.</p>
+                <hr>
+                <h3>contentSelector</h3>
+                @default:
+                <pre class="inline"><code>'.step-content'</code></pre><br>
+                @type:
+                <pre class="inline"><code>String</code></pre><br>
+                <p>The selector used for the step content.</p>
+                <hr>
+                <h3>footerSelector</h3>
+                @default:
+                <pre class="inline"><code>'.step-footer'</code></pre><br>
+                @type:
+                <pre class="inline"><code>String</code></pre><br>
+                <p>The selector used for the buttons.</p>
+                <hr>
+                <h3>activeClass</h3>
+                @default:
+                <pre class="inline"><code>'active'</code></pre><br>
+                @type:
+                <pre class="inline"><code>String</code></pre><br>
+                <p>The class used when a step is active.</p>
+                <hr>
+                <h3>doneClass</h3>
+                @default:
+                <pre class="inline"><code>'done'</code></pre><br>
+                @type:
+                <pre class="inline"><code>String</code></pre><br>
+                <p>The class used when a step is done.</p>
+                <hr>
+                <h3>errorClass</h3>
+                @default:
+                <pre class="inline"><code>'error'</code></pre><br>
+                @type:
+                <pre class="inline"><code>String</code></pre><br>
+                <p>The class used when an error occurs in a step.</p>
             </article>
             <article class="section" id="events">
                 <h1>Events</h1>
@@ -166,8 +207,20 @@
                 <pre class="inline"><code>Number</code></pre><br>
                 <p>Returning current step number.</p>
                 <hr>
+                <h3>.getMaxStepIndex()</h3>
+                @return:
+                <pre class="inline"><code>Number</code></pre><br>
+                <p>Gets the max step index.</p>
+                <hr>
+                <h3>.next()</h3>
+                <p>Goes to the next step.</p>
+                <h3>.prev()</h3>
+                <p>Goes to the previous step.</p>
+                <h3>.finish()</h3>
+                <p>Trigger the onFinish event.</p>
                 <h3>.destroy()</h3>
                 <p>Destroy wizard. Clear objects and bindings.</p>
+                <hr>
             </article>
             <article class="section" id="license">
                 <h1>License</h1>
