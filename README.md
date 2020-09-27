@@ -25,8 +25,8 @@ git clone http://github.com/oguzhanoya/jquery-steps.git
 ```
 CDN
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.0/dist/jquery-steps.min.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.0/dist/jquery-steps.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.1/dist/jquery-steps.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.1/dist/jquery-steps.min.js"></script>
 ```
 
 ## Setup
@@ -102,6 +102,7 @@ Init plugin with choosen options.
 |finish|Trigger the onFinish event.|
 |getStepIndex|Gets the current step index.(start from 0)|
 |getMaxStepIndex|Gets the max step index.|
+|setStepIndex|Sets the step index.|
 
 ## License
 

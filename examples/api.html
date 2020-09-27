@@ -42,6 +42,10 @@
   <button id="btnGetStepIndex">Current Step Index</button>
   <button id="btnGetMaxStepIndex">Max Step Index</button>
   <hr>
+  <button id="btnGoToFirstStep">First Step</button>
+  <button id="btnGoToStep2">Go to Step 2</button>
+  <button id="btnGoToLastStep">Last Step</button>
+  <hr>
   <button id="btnDestroy">Destroy</button>
 
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -53,6 +57,7 @@
         alert('Wizard Completed');
       }
     });
+
     steps_api = steps.data('plugin_Steps');
 
     $('#btnPrev').on('click', function () {
@@ -64,13 +69,26 @@
 		});
 
     $('#btnGetStepIndex').on('click', function () {
-      const idx = steps_api.getStepIndex();
+      var idx = steps_api.getStepIndex();
       alert(idx);
 		});
 
     $('#btnGetMaxStepIndex').on('click', function () {
-      const idx = steps_api.getMaxStepIndex();
+      var idx = steps_api.getMaxStepIndex();
       alert(idx);
+		});
+
+    $('#btnGoToFirstStep').on('click', function () {
+      steps_api.setStepIndex(0);
+		});
+
+    $('#btnGoToStep2').on('click', function () {
+      steps_api.setStepIndex(1);
+		});
+
+    $('#btnGoToLastStep').on('click', function () {
+      var maxIdx = steps_api.getMaxStepIndex();
+      steps_api.setStepIndex(maxIdx);
 		});
 
     $('#btnDestroy').on('click', function () {

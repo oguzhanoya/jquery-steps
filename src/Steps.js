@@ -168,6 +168,14 @@ class Steps {
     }
   }
 
+  setStepIndex(idx) {
+    const maxIndex = this.getMaxStepIndex();
+    if (idx <= maxIndex) {
+      const stepIndex = this.getStepIndex();
+      this.setActiveStep(stepIndex, idx);
+    }
+  }
+
   next() {
     const stepIndex = this.getStepIndex();
     const maxIndex = this.getMaxStepIndex();
