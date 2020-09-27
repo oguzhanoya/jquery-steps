@@ -1,5 +1,5 @@
 /*!
-    * Steps v1.1.0
+    * Steps v1.1.1
     * https://github.com/oguzhanoya/jquery-steps
     *
     * Copyright (c) 2020 oguzhanoya
@@ -257,6 +257,16 @@
         }
       }
     }, {
+      key: "setStepIndex",
+      value: function setStepIndex(idx) {
+        var maxIndex = this.getMaxStepIndex();
+
+        if (idx <= maxIndex) {
+          var stepIndex = this.getStepIndex();
+          this.setActiveStep(stepIndex, idx);
+        }
+      }
+    }, {
       key: "next",
       value: function next() {
         var stepIndex = this.getStepIndex();
@@ -289,7 +299,7 @@
     return Steps;
   }();
 
-  var version = "1.1.0";
+  var version = "1.1.1";
 
   var other = $__default['default'].fn.steps;
 
