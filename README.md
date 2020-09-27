@@ -24,7 +24,7 @@ Github
 git clone http://github.com/oguzhanoya/jquery-steps.git
 ```
 CDN
-```sh
+```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.0/dist/jquery-steps.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.0/dist/jquery-steps.min.js"></script>
 ```
