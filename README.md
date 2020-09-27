@@ -37,29 +37,29 @@ Include plugin stylesheets.
 ```
 Make necessary markup for wizard. That's all, you don't need to do anything else.
 ```html
-  <div class="step-app" id="demo">
-    <ul class="step-steps">
-      <li data-step-target="step1">Step 1</li>
-      <li data-step-target="step2">Step 2</li>
-      <li data-step-target="step3">Step 3</li>
-    </ul>
-    <div class="step-content">
-      <div class="step-tab-panel" data-step="step1">
-        ...
-      </div>
-      <div class="step-tab-panel" data-step="step2">
-        ...
-      </div>
-      <div class="step-tab-panel" data-step="step3">
-        ...
-      </div>
+<div class="step-app" id="demo">
+  <ul class="step-steps">
+    <li data-step-target="step1">Step 1</li>
+    <li data-step-target="step2">Step 2</li>
+    <li data-step-target="step3">Step 3</li>
+  </ul>
+  <div class="step-content">
+    <div class="step-tab-panel" data-step="step1">
+      ...
     </div>
-    <div class="step-footer">
-      <button data-step-action="prev" class="step-btn">Previous</button>
-      <button data-step-action="next" class="step-btn">Next</button>
-      <button data-step-action="finish" class="step-btn">Finish</button>
+    <div class="step-tab-panel" data-step="step2">
+      ...
+    </div>
+    <div class="step-tab-panel" data-step="step3">
+      ...
     </div>
   </div>
+  <div class="step-footer">
+    <button data-step-action="prev" class="step-btn">Previous</button>
+    <button data-step-action="next" class="step-btn">Next</button>
+    <button data-step-action="finish" class="step-btn">Finish</button>
+  </div>
+</div>
 ```
 Include plugin and dependeces. jQuery is the only dependency, make sure to include it.
 ```html
@@ -69,9 +69,9 @@ Include plugin and dependeces. jQuery is the only dependency, make sure to inclu
 Init plugin with choosen options.
 ```html
 <script>
-    $('#demo').steps({
-        onFinish: function () { alert('complete'); }
-    });
+  $('#demo').steps({
+    onFinish: function () { alert('complete'); }
+  });
 </script>
 ```
 ## Configuration
