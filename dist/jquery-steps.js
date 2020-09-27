@@ -1,5 +1,5 @@
 /*!
-    * Steps v1.0.3
+    * Steps v1.1.0
     * https://github.com/oguzhanoya/jquery-steps
     *
     * Copyright (c) 2020 oguzhanoya
@@ -48,10 +48,9 @@
     onChange: function onChange() {
       return true;
     },
-    stepSelector: '.step-steps > li',
-    contentSelector: '.step-content > .step-tab-panel',
+    stepSelector: '.step-steps',
+    contentSelector: '.step-content',
     footerSelector: '.step-footer',
-    buttonSelector: 'button',
     activeClass: 'active',
     doneClass: 'done',
     errorClass: 'error'
@@ -64,7 +63,10 @@
       // Extend defaults with the init options.
       this.options = $__default['default'].extend({}, DEFAULTS, options); // Store main DOM element.
 
-      this.el = $__default['default'](element); // Initialize
+      this.el = $__default['default'](element);
+      this.stepSelector = "".concat(this.options.stepSelector, " [data-step-target]");
+      this.footerSelector = "".concat(this.options.footerSelector, " [data-step-action]");
+      this.contentSelector = "".concat(this.options.contentSelector, " [data-step]"); // Initialize
 
       this.init();
     }
@@ -73,7 +75,7 @@
       key: "stepClick",
       value: function stepClick(e) {
         e.preventDefault();
-        var nextStep = $__default['default'](this).closest('li').index();
+        var nextStep = $__default['default'](this).closest('[data-step-target]').index();
         var stepIndex = e.data.self.getStepIndex();
         e.data.self.setActiveStep(stepIndex, nextStep);
       }
@@ -81,7 +83,7 @@
       key: "btnClick",
       value: function btnClick(e) {
         e.preventDefault();
-        var statusAction = $__default['default'](this).data('direction');
+        var statusAction = $__default['default'](this).data('step-action');
         e.data.self.setAction(statusAction);
       }
     }, {
@@ -90,15 +92,15 @@
         this.hook('onInit');
         var self = this; // step click event
 
-        $__default['default'](this.el).find(this.options.stepSelector).on('click', {
+        $__default['default'](this.el).find(this.stepSelector).on('click', {
           self: self
         }, this.stepClick); // button click event
 
-        $__default['default'](this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).on('click', {
+        $__default['default'](this.el).find(this.footerSelector).on('click', {
           self: self
         }, this.btnClick); // set default step
 
-        this.setShowStep(this.options.startAt, '', this.options.activeClass);
+        this.setActiveStep(0, this.options.startAt, true);
         this.setFooterBtns(); // show footer buttons
 
         if (!this.options.showFooterButtons) {
@@ -116,21 +118,22 @@
     }, {
       key: "destroy",
       value: function destroy() {
-        $__default['default'](this.el).find(this.options.stepSelector).off('click', this.stepClick);
-        $__default['default'](this.el).find("".concat(this.options.footerSelector, " ").concat(this.options.buttonSelector)).off('click', this.btnClick);
-        this.el.removeData('plugin_Steps');
         this.hook('onDestroy');
+        $__default['default'](this.el).find(this.stepSelector).off('click');
+        $__default['default'](this.el).find(this.footerSelector).off('click');
+        this.el.removeData('plugin_Steps');
+        this.el.remove();
       }
     }, {
       key: "getStepIndex",
       value: function getStepIndex() {
-        var stepIndex = this.el.find(this.options.stepSelector).filter(".".concat(this.options.activeClass)).index();
+        var stepIndex = this.el.find(this.stepSelector).filter(".".concat(this.options.activeClass.split(' ').join('.'))).index();
         return stepIndex || 0;
       }
     }, {
-      key: "getMaxStepCount",
-      value: function getMaxStepCount() {
-        return this.el.find(this.options.stepSelector).length - 1;
+      key: "getMaxStepIndex",
+      value: function getMaxStepIndex() {
+        return this.el.find(this.stepSelector).length - 1;
       }
     }, {
       key: "getStepDirection",
@@ -149,55 +152,51 @@
       key: "setShowStep",
       value: function setShowStep(idx, removeClass) {
         var addClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-        this.el.find(this.options.contentSelector).removeClass(this.options.activeClass);
-        var $prevStep = this.el.find(this.options.stepSelector).eq(idx);
-        $prevStep.removeClass(removeClass).addClass(addClass);
-        var targetStep = $prevStep.find('a').attr('href');
-        $__default['default'](targetStep).addClass(this.options.activeClass);
+        var $targetStep = this.el.find(this.stepSelector).eq(idx);
+        $targetStep.removeClass(removeClass).addClass(addClass);
+        var $tabContent = this.el.find(this.contentSelector);
+        $tabContent.removeClass(this.options.activeClass).eq(idx).addClass(this.options.activeClass);
       }
     }, {
       key: "setActiveStep",
       value: function setActiveStep(currentIndex, newIndex) {
-        if (newIndex !== currentIndex) {
-          if (newIndex > currentIndex) {
-            for (var i = 0; i <= newIndex; i += 1) {
-              var lastTab = i === newIndex;
+        var init = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-              if (lastTab) {
-                this.setShowStep(i, this.options.doneClass, this.options.activeClass);
-              } else {
-                this.setShowStep(i, "".concat(this.options.activeClass, " ").concat(this.options.errorClass), this.options.doneClass);
-              }
+        if (newIndex !== currentIndex || init) {
+          var conditionDirection = newIndex > currentIndex ? function (start) {
+            return start <= newIndex;
+          } : function (start) {
+            return start >= newIndex;
+          };
+          var conditionIncrementOrDecrement = newIndex > currentIndex ? function (start) {
+            var s = start;
+            s += 1;
+            return s;
+          } : function (start) {
+            var s = start;
+            s -= 1;
+            return s;
+          };
+          var i = currentIndex;
 
-              var stepDirectionF = this.getStepDirection(i, newIndex);
-              var validStep = this.options.onChange(i, newIndex, stepDirectionF);
+          while (conditionDirection(i)) {
+            var stepDirection = this.getStepDirection(i, newIndex);
 
-              if (!validStep) {
-                this.setShowStep(i, this.options.doneClass, "".concat(this.options.activeClass, " ").concat(this.options.errorClass));
-                this.setFooterBtns();
-                break;
-              }
+            if (i === newIndex) {
+              this.setShowStep(i, this.options.doneClass, this.options.activeClass);
+            } else {
+              var checkDone = stepDirection === 'forward' && this.options.doneClass;
+              this.setShowStep(i, "".concat(this.options.activeClass, " ").concat(this.options.errorClass, " ").concat(this.options.doneClass), checkDone);
             }
-          }
 
-          if (currentIndex > newIndex) {
-            for (var _i = currentIndex; _i >= newIndex; _i -= 1) {
-              var stepDirectionB = this.getStepDirection(_i, newIndex);
+            var validStep = this.options.onChange(i, newIndex, stepDirection);
 
-              var _validStep = this.options.onChange(_i, newIndex, stepDirectionB);
-
-              this.setShowStep(_i, "".concat(this.options.doneClass, " ").concat(this.options.activeClass, " ").concat(this.options.errorClass));
-
-              if (_i === newIndex) {
-                this.setShowStep(_i, "".concat(this.options.doneClass, " ").concat(this.options.errorClass), this.options.activeClass);
-              }
-
-              if (!_validStep) {
-                this.setShowStep(_i, this.options.doneClass, "".concat(this.options.activeClass, " ").concat(this.options.errorClass));
-                this.setFooterBtns();
-                break;
-              }
+            if (!validStep) {
+              this.setShowStep(i, this.options.doneClass, "".concat(this.options.activeClass, " ").concat(this.options.errorClass));
+              i = newIndex;
             }
+
+            i = conditionIncrementOrDecrement(i);
           }
 
           this.setFooterBtns();
@@ -207,28 +206,28 @@
       key: "setFooterBtns",
       value: function setFooterBtns() {
         var stepIndex = this.getStepIndex();
-        var maxIndex = this.getMaxStepCount();
+        var maxIndex = this.getMaxStepIndex();
         var $footer = this.el.find(this.options.footerSelector);
 
         if (stepIndex === 0) {
-          $footer.find('button[data-direction="prev"]').hide();
+          $footer.find('[data-step-action="prev"]').hide();
         }
 
         if (stepIndex > 0 && this.options.showBackButton) {
-          $footer.find('button[data-direction="prev"]').show();
+          $footer.find('[data-step-action="prev"]').show();
         }
 
         if (maxIndex === stepIndex) {
-          $footer.find('button[data-direction="prev"]').show();
-          $footer.find('button[data-direction="next"]').hide();
-          $footer.find('button[data-direction="finish"]').show();
+          $footer.find('[data-step-action="prev"]').show();
+          $footer.find('[data-step-action="next"]').hide();
+          $footer.find('[data-step-action="finish"]').show();
         } else {
-          $footer.find('button[data-direction="next"]').show();
-          $footer.find('button[data-direction="finish"]').hide();
+          $footer.find('[data-step-action="next"]').show();
+          $footer.find('[data-step-action="finish"]').hide();
         }
 
         if (!this.options.showBackButton) {
-          $footer.find('button[data-direction="prev"]').hide();
+          $footer.find('[data-step-action="prev"]').hide();
         }
       }
     }, {
@@ -251,11 +250,9 @@
           if (validStep) {
             this.hook('onFinish');
           } else {
-            this.setShowStep(stepIndex, '', 'error');
+            this.setShowStep(stepIndex, '', this.options.errorClass);
           }
-        }
-
-        if (action !== 'finish') {
+        } else {
           this.setActiveStep(stepIndex, nextStep);
         }
       }
@@ -263,7 +260,7 @@
       key: "next",
       value: function next() {
         var stepIndex = this.getStepIndex();
-        var maxIndex = this.getMaxStepCount();
+        var maxIndex = this.getMaxStepIndex();
         return maxIndex === stepIndex ? this.setAction('finish') : this.setAction('next');
       }
     }, {
@@ -292,6 +289,8 @@
     return Steps;
   }();
 
+  var version = "1.1.0";
+
   var other = $__default['default'].fn.steps;
 
   $__default['default'].fn.steps = function (options) {
@@ -302,7 +301,7 @@
     });
   };
 
-  $__default['default'].fn.steps.version = '1.0.2';
+  $__default['default'].fn.steps.version = version;
   $__default['default'].fn.steps.setDefaults = Steps.setDefaults; // No conflict
 
   $__default['default'].fn.steps.noConflict = function () {

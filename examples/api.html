@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Multiple</title>
+  <title>Api</title>
   <link rel="stylesheet" href="../dist/jquery-steps.css">
   <!-- Demo stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <div class="step-app" id="demo1">
+  <div class="step-app" id="demo">
     <ul class="step-steps">
       <li data-step-target="step1">Step 1</li>
       <li data-step-target="step2">Step 2</li>
@@ -35,44 +35,47 @@
     </div>
   </div>
 
-  <div class="step-app" id="demo2">
-    <ul class="step-steps">
-      <li data-step-target="step1">Step 1</li>
-      <li data-step-target="step2">Step 2</li>
-      <li data-step-target="step3">Step 3</li>
-    </ul>
-    <div class="step-content">
-      <div class="step-tab-panel" data-step="step1">
-        ... step1
-      </div>
-      <div class="step-tab-panel" data-step="step2">
-        ... step2
-      </div>
-      <div class="step-tab-panel" data-step="step3">
-        ... step3
-      </div>
-    </div>
-    <div class="step-footer">
-      <button data-step-action="prev" class="step-btn">Previous</button>
-      <button data-step-action="next" class="step-btn">Next</button>
-      <button data-step-action="finish" class="step-btn">Finish</button>
-    </div>
-  </div>
+  <br>
+  <button id="btnPrev">Prev</button>
+  <button id="btnNext">Next</button>
+  <hr>
+  <button id="btnGetStepIndex">Current Step Index</button>
+  <button id="btnGetMaxStepIndex">Max Step Index</button>
+  <hr>
+  <button id="btnDestroy">Destroy</button>
 
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="../dist/jquery-steps.js"></script>
+	<script src="../dist/jquery-steps.js"></script>
   <script>
-    $('#demo1').steps({
-      startAt: 1,
-      showBackButton: false,
+    var steps = $('#demo').steps({
+      showFooterButtons: false,
       onFinish: function () {
         alert('Wizard Completed');
       }
     });
+    steps_api = steps.data('plugin_Steps');
 
-    $('#demo2').steps({
-      showFooterButtons: false
-    });
-  </script>
+    $('#btnPrev').on('click', function () {
+      steps_api.prev();
+		});
+
+    $('#btnNext').on('click', function () {
+      steps_api.next();
+		});
+
+    $('#btnGetStepIndex').on('click', function () {
+      const idx = steps_api.getStepIndex();
+      alert(idx);
+		});
+
+    $('#btnGetMaxStepIndex').on('click', function () {
+      const idx = steps_api.getMaxStepIndex();
+      alert(idx);
+		});
+
+    $('#btnDestroy').on('click', function () {
+      steps_api.destroy();
+		});
+	</script>
 </body>
 </html>

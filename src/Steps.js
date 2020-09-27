@@ -9,20 +9,24 @@ class Steps {
     // Store main DOM element.
     this.el = $(element);
 
+    this.stepSelector = `${this.options.stepSelector} [data-step-target]`;
+    this.footerSelector = `${this.options.footerSelector} [data-step-action]`;
+    this.contentSelector = `${this.options.contentSelector} [data-step]`;
+
     // Initialize
     this.init();
   }
 
   stepClick(e) {
     e.preventDefault();
-    const nextStep = $(this).closest('li').index();
+    const nextStep = $(this).closest('[data-step-target]').index();
     const stepIndex = e.data.self.getStepIndex();
     e.data.self.setActiveStep(stepIndex, nextStep);
   }
 
   btnClick(e) {
     e.preventDefault();
-    const statusAction = $(this).data('direction');
+    const statusAction = $(this).data('step-action');
     e.data.self.setAction(statusAction);
   }
 
@@ -31,13 +35,14 @@ class Steps {
     const self = this;
 
     // step click event
-    $(this.el).find(this.options.stepSelector).on('click', { self }, this.stepClick);
+    $(this.el).find(this.stepSelector).on('click', { self }, this.stepClick);
 
     // button click event
-    $(this.el).find(`${this.options.footerSelector} ${this.options.buttonSelector}`).on('click', { self }, this.btnClick);
+    $(this.el).find(this.footerSelector).on('click', { self }, this.btnClick);
 
     // set default step
-    this.setShowStep(this.options.startAt, '', this.options.activeClass);
+    this.setActiveStep(0, this.options.startAt, true);
+
     this.setFooterBtns();
 
     // show footer buttons
@@ -54,21 +59,22 @@ class Steps {
   }
 
   destroy() {
-    $(this.el).find(this.options.stepSelector).off('click', this.stepClick);
-    $(this.el).find(`${this.options.footerSelector} ${this.options.buttonSelector}`).off('click', this.btnClick);
-    this.el.removeData('plugin_Steps');
     this.hook('onDestroy');
+    $(this.el).find(this.stepSelector).off('click');
+    $(this.el).find(this.footerSelector).off('click');
+    this.el.removeData('plugin_Steps');
+    this.el.remove();
   }
 
   getStepIndex() {
-    const stepIndex = this.el.find(this.options.stepSelector)
-      .filter(`.${this.options.activeClass}`)
+    const stepIndex = this.el.find(this.stepSelector)
+      .filter(`.${this.options.activeClass.split(' ').join('.')}`)
       .index();
     return stepIndex || 0;
   }
 
-  getMaxStepCount() {
-    return this.el.find(this.options.stepSelector).length - 1;
+  getMaxStepIndex() {
+    return this.el.find(this.stepSelector).length - 1;
   }
 
   getStepDirection(stepIndex, newIndex) {
@@ -82,77 +88,66 @@ class Steps {
   }
 
   setShowStep(idx, removeClass, addClass = '') {
-    this.el.find(this.options.contentSelector).removeClass(this.options.activeClass);
-    const $prevStep = this.el.find(this.options.stepSelector).eq(idx);
-    $prevStep.removeClass(removeClass).addClass(addClass);
-    const targetStep = $prevStep.find('a').attr('href');
-    $(targetStep).addClass(this.options.activeClass);
+    const $targetStep = this.el.find(this.stepSelector).eq(idx);
+    $targetStep.removeClass(removeClass).addClass(addClass);
+    const $tabContent = this.el.find(this.contentSelector);
+    $tabContent.removeClass(this.options.activeClass).eq(idx).addClass(this.options.activeClass);
   }
 
-  setActiveStep(currentIndex, newIndex) {
-    if (newIndex !== currentIndex) {
-      if (newIndex > currentIndex) {
-        for (let i = 0; i <= newIndex; i += 1) {
-          const lastTab = i === newIndex;
-          if (lastTab) {
-            this.setShowStep(i, this.options.doneClass, this.options.activeClass);
-          } else {
-            this.setShowStep(i, `${this.options.activeClass} ${this.options.errorClass}`, this.options.doneClass);
-          }
-          const stepDirectionF = this.getStepDirection(i, newIndex);
-          const validStep = this.options.onChange(i, newIndex, stepDirectionF);
-          if (!validStep) {
-            this.setShowStep(i, this.options.doneClass, `${this.options.activeClass} ${this.options.errorClass}`);
-            this.setFooterBtns();
-            break;
-          }
-        }
-      }
+  setActiveStep(currentIndex, newIndex, init = false) {
+    if (newIndex !== currentIndex || init) {
+      const conditionDirection = (newIndex > currentIndex)
+        ? (start) => start <= newIndex
+        : (start) => start >= newIndex;
 
-      if (currentIndex > newIndex) {
-        for (let i = currentIndex; i >= newIndex; i -= 1) {
-          const stepDirectionB = this.getStepDirection(i, newIndex);
-          const validStep = this.options.onChange(i, newIndex, stepDirectionB);
-          this.setShowStep(i, `${this.options.doneClass} ${this.options.activeClass} ${this.options.errorClass}`);
-          if (i === newIndex) {
-            this.setShowStep(i, `${this.options.doneClass} ${this.options.errorClass}`, this.options.activeClass);
-          }
-          if (!validStep) {
-            this.setShowStep(i, this.options.doneClass, `${this.options.activeClass} ${this.options.errorClass}`);
-            this.setFooterBtns();
-            break;
-          }
-        }
-      }
+      const conditionIncrementOrDecrement = (newIndex > currentIndex)
+        ? (start) => { let s = start; s += 1; return s; }
+        : (start) => { let s = start; s -= 1; return s; };
 
+      let i = currentIndex;
+      while (conditionDirection(i)) {
+        const stepDirection = this.getStepDirection(i, newIndex);
+        if (i === newIndex) {
+          this.setShowStep(i, this.options.doneClass, this.options.activeClass);
+        } else {
+          const checkDone = stepDirection === 'forward' && this.options.doneClass;
+          this.setShowStep(i, `${this.options.activeClass} ${this.options.errorClass} ${this.options.doneClass}`, checkDone);
+        }
+        const validStep = this.options.onChange(i, newIndex, stepDirection);
+        if (!validStep) {
+          this.setShowStep(i, this.options.doneClass, `${this.options.activeClass} ${this.options.errorClass}`);
+          i = newIndex;
+        }
+        i = conditionIncrementOrDecrement(i);
+      }
       this.setFooterBtns();
     }
   }
 
   setFooterBtns() {
     const stepIndex = this.getStepIndex();
-    const maxIndex = this.getMaxStepCount();
+    const maxIndex = this.getMaxStepIndex();
     const $footer = this.el.find(this.options.footerSelector);
 
     if (stepIndex === 0) {
-      $footer.find('button[data-direction="prev"]').hide();
+      $footer.find('[data-step-action="prev"]').hide();
     }
 
     if (stepIndex > 0 && this.options.showBackButton) {
-      $footer.find('button[data-direction="prev"]').show();
+      $footer.find('[data-step-action="prev"]').show();
     }
 
     if (maxIndex === stepIndex) {
-      $footer.find('button[data-direction="prev"]').show();
-      $footer.find('button[data-direction="next"]').hide();
-      $footer.find('button[data-direction="finish"]').show();
+      $footer.find('[data-step-action="prev"]').show();
+      $footer.find('[data-step-action="next"]').hide();
+      $footer.find('[data-step-action="finish"]').show();
     } else {
-      $footer.find('button[data-direction="next"]').show();
-      $footer.find('button[data-direction="finish"]').hide();
+      $footer.find('[data-step-action="next"]').show();
+      $footer.find('[data-step-action="finish"]').hide();
     }
 
     if (!this.options.showBackButton) {
-      $footer.find('button[data-direction="prev"]').hide();
+      $footer.find('[data-step-action="prev"]').hide();
     }
   }
 
@@ -166,15 +161,16 @@ class Steps {
       if (validStep) {
         this.hook('onFinish');
       } else {
-        this.setShowStep(stepIndex, '', 'error');
+        this.setShowStep(stepIndex, '', this.options.errorClass);
       }
+    } else {
+      this.setActiveStep(stepIndex, nextStep);
     }
-    if (action !== 'finish') { this.setActiveStep(stepIndex, nextStep); }
   }
 
   next() {
     const stepIndex = this.getStepIndex();
-    const maxIndex = this.getMaxStepCount();
+    const maxIndex = this.getMaxStepIndex();
     return maxIndex === stepIndex ? this.setAction('finish') : this.setAction('next');
   }
 

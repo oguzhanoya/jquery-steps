@@ -8,11 +8,7 @@
 .step-app > .step-steps > li {
   list-style: none;
   flex: 1;
-}
-.step-app > .step-steps > li:last-child a {
-  border: none;
-}
-.step-app > .step-steps > li > a {
+  cursor: pointer;
   display: block;
   padding: 10px;
   color: #333;
@@ -20,7 +16,25 @@
   text-decoration: none;
   border-right: 1px solid #fff;
 }
-.step-app > .step-steps > li > a > .number {
+.step-app > .step-steps > li:hover {
+  background-color: #ddd;
+}
+.step-app > .step-steps > li:last-child a {
+  border: none;
+}
+.step-app > .step-steps > li.active {
+  background-color: #32c5d2;
+  color: #fff;
+}
+.step-app > .step-steps > li.error {
+  background-color: #e7505a;
+  color: #fff;
+}
+.step-app > .step-steps > li.done {
+  background-color: #3cb371;
+  color: #fff;
+}
+.step-app > .step-steps > li > .number {
   background: #fff;
   padding: 0 8px;
   display: inline-block;
@@ -28,21 +42,6 @@
   margin-right: 15px;
   border-radius: 3px;
   color: #333;
-}
-.step-app > .step-steps > li > a:hover {
-  background-color: #ddd;
-}
-.step-app > .step-steps > li.active a {
-  background-color: #32c5d2;
-  color: #fff;
-}
-.step-app > .step-steps > li.error a {
-  background-color: #e7505a;
-  color: #fff;
-}
-.step-app > .step-steps > li.done a {
-  background-color: #3cb371;
-  color: #fff;
 }
 .step-app > .step-content {
   border: 1px solid #e5e5e5;

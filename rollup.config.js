@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel';
+import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 const now = new Date();
@@ -28,6 +29,9 @@ export default {
       exclude: 'node_modules/**',
       presets: ['@babel/preset-env'],
       babelrc: false,
+    }),
+    json({
+      exclude: 'node_modules/**',
     }),
   ],
 };

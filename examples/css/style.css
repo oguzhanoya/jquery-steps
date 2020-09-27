@@ -1,6 +1,7 @@
 body {
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
+  padding: 100px;
 }
 button, input, select, textarea {
   font-family: inherit;

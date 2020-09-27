@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import Steps from './Steps';
+import { version } from '../package.json';
 
 const other = $.fn.steps;
 
@@ -11,7 +12,7 @@ $.fn.steps = function (options) {
   });
 };
 
-$.fn.steps.version = '1.0.2';
+$.fn.steps.version = version;
 $.fn.steps.setDefaults = Steps.setDefaults;
 
 // No conflict

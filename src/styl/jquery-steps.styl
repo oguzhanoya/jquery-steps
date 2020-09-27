@@ -14,37 +14,35 @@ bg-gray = #e5e5e5;
     & > li
       list-style none
       flex 1
+      &:hover
+        background-color darken(bg-gray, 3)
       &:last-child a
           border none
-      & > a
-        display block
-        padding 10px
-        color #333
-        background-color bg-gray
-        text-decoration none
-        border-right 1px solid #fff
-        & > .number
-          background #fff
-          padding 0 8px
-          display inline-block
-          text-align center
-          margin-right 15px
-          border-radius 3px
-          color #333
-        &:hover
-          background-color darken(bg-gray, 3)
       &.active
-        a
-          background-color bg-active
-          color #fff
+        background-color bg-active
+        color #fff
       &.error
-        a
-          background-color bg-error
-          color #fff
+        background-color bg-error
+        color #fff
       &.done
-        a
-          background-color bg-done
-          color #fff
+        background-color bg-done
+        color #fff
+      cursor pointer
+      display block
+      padding 10px
+      color #333
+      background-color bg-gray
+      text-decoration none
+      border-right 1px solid #fff
+      & > .number
+        background #fff
+        padding 0 8px
+        display inline-block
+        text-align center
+        margin-right 15px
+        border-radius 3px
+        color #333
+
   & > .step-content
     border 1px solid bg-gray
     padding 10px

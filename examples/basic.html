@@ -11,29 +11,27 @@
 </head>
 <body>
 
-  <div id="demo">
-    <div class="step-app">
-      <ul class="step-steps">
-        <li><a href="#step1">Step 1</a></li>
-        <li><a href="#step2">Step 2</a></li>
-        <li><a href="#step3">Step 3</a></li>
-      </ul>
-      <div class="step-content">
-        <div class="step-tab-panel" id="step1">
-          ...
-        </div>
-        <div class="step-tab-panel" id="step2">
-          ...
-        </div>
-        <div class="step-tab-panel" id="step3">
-          ...
-        </div>
+  <div class="step-app" id="demo">
+    <ul class="step-steps">
+      <li data-step-target="step1">Step 1</li>
+      <li data-step-target="step2">Step 2</li>
+      <li data-step-target="step3">Step 3</li>
+    </ul>
+    <div class="step-content">
+      <div class="step-tab-panel" data-step="step1">
+        ... step1
       </div>
-      <div class="step-footer">
-        <button data-direction="prev" class="step-btn">Previous</button>
-        <button data-direction="next" class="step-btn">Next</button>
-        <button data-direction="finish" class="step-btn">Finish</button>
+      <div class="step-tab-panel" data-step="step2">
+        ... step2
       </div>
+      <div class="step-tab-panel" data-step="step3">
+        ... step3
+      </div>
+    </div>
+    <div class="step-footer">
+      <button data-step-action="prev" class="step-btn">Previous</button>
+      <button data-step-action="next" class="step-btn">Next</button>
+      <button data-step-action="finish" class="step-btn">Finish</button>
     </div>
   </div>
 
