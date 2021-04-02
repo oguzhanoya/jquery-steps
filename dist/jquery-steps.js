@@ -2,7 +2,7 @@
     * Steps v1.1.1
     * https://github.com/oguzhanoya/jquery-steps
     *
-    * Copyright (c) 2020 oguzhanoya
+    * Copyright (c) 2021 oguzhanoya
     * Released under the MIT license
     */
     
@@ -75,7 +75,10 @@
       key: "stepClick",
       value: function stepClick(e) {
         e.preventDefault();
-        var nextStep = $__default['default'](this).closest('[data-step-target]').index();
+        var self = e.data.self;
+        var all = self.el.find(self.stepSelector);
+        var next = $__default['default'](this).closest('[data-step-target]');
+        var nextStep = all.index(next);
         var stepIndex = e.data.self.getStepIndex();
         e.data.self.setActiveStep(stepIndex, nextStep);
       }
@@ -127,7 +130,8 @@
     }, {
       key: "getStepIndex",
       value: function getStepIndex() {
-        var stepIndex = this.el.find(this.stepSelector).filter(".".concat(this.options.activeClass.split(' ').join('.'))).index();
+        var all = this.el.find(this.stepSelector);
+        var stepIndex = all.index(all.filter(".".concat(this.options.activeClass.split(' ').join('.'))));
         return stepIndex || 0;
       }
     }, {
