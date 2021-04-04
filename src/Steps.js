@@ -19,7 +19,10 @@ class Steps {
 
   stepClick(e) {
     e.preventDefault();
-    const nextStep = $(this).closest('[data-step-target]').index();
+    const { self } = e.data;
+    const all = self.el.find(self.stepSelector);
+    const next = $(this).closest('[data-step-target]');
+    const nextStep = all.index(next);
     const stepIndex = e.data.self.getStepIndex();
     e.data.self.setActiveStep(stepIndex, nextStep);
   }
@@ -67,9 +70,8 @@ class Steps {
   }
 
   getStepIndex() {
-    const stepIndex = this.el.find(this.stepSelector)
-      .filter(`.${this.options.activeClass.split(' ').join('.')}`)
-      .index();
+    const all = this.el.find(this.stepSelector);
+    const stepIndex = all.index(all.filter(`.${this.options.activeClass.split(' ').join('.')}`));
     return stepIndex || 0;
   }
 
