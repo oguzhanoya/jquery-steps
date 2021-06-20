@@ -2,7 +2,8 @@
 
 [![npm](https://img.shields.io/npm/v/jquery.steps)](https://www.npmjs.com/package/jquery.steps)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![npm](https://img.shields.io/npm/dw/jquery.steps)](https://www.npmjs.com/package/jquery.steps)
+[![npm](https://img.shields.io/npm/dm/jquery.steps)](https://www.npmjs.com/package/jquery.steps)
+[![npm](https://img.shields.io/jsdelivr/npm/hm/jquery.steps)](https://www.npmjs.com/package/jquery.steps)
 
 > A simple, lightweight jQuery step wizard plugin.
 
@@ -25,8 +26,8 @@ git clone http://github.com/oguzhanoya/jquery-steps.git
 ```
 CDN
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.1/dist/jquery-steps.min.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.1/dist/jquery-steps.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.2/dist/jquery-steps.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery.steps@1.1.2/dist/jquery-steps.min.js"></script>
 ```
 
 ## Setup
@@ -63,7 +64,7 @@ Make necessary markup for wizard. That's all, you don't need to do anything else
 ```
 Include plugin and dependeces. jQuery is the only dependency, make sure to include it.
 ```html
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script src="js/jquery-steps.js"></script>
 ```
 Init plugin with choosen options.

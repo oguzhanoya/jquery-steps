@@ -72,7 +72,7 @@ class Steps {
   getStepIndex() {
     const all = this.el.find(this.stepSelector);
     const stepIndex = all.index(all.filter(`.${this.options.activeClass.split(' ').join('.')}`));
-    return stepIndex || 0;
+    return stepIndex;
   }
 
   getMaxStepIndex() {

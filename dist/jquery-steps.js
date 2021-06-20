@@ -1,5 +1,5 @@
 /*!
-    * Steps v1.1.1
+    * Steps v1.1.2
     * https://github.com/oguzhanoya/jquery-steps
     *
     * Copyright (c) 2021 oguzhanoya
@@ -132,7 +132,7 @@
       value: function getStepIndex() {
         var all = this.el.find(this.stepSelector);
         var stepIndex = all.index(all.filter(".".concat(this.options.activeClass.split(' ').join('.'))));
-        return stepIndex || 0;
+        return stepIndex;
       }
     }, {
       key: "getMaxStepIndex",
@@ -303,7 +303,7 @@
     return Steps;
   }();
 
-  var version = "1.1.1";
+  var version = "1.1.2";
 
   var other = $__default['default'].fn.steps;
 
