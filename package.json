@@ -1,6 +1,6 @@
 {
   "name": "jquery.steps",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A simple, lightweight jQuery step wizard plugin.",
   "main": "./dist/jquery-steps.js",
   "repository": {
@@ -28,19 +28,19 @@
   "author": "oguzhanoya",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "eslint": "^7.10.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.5",
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
     "npm-run-all": "^4.1.5",
-    "rollup": "^2.28.2",
+    "rollup": "^2.52.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-json": "^4.0.0",
     "stylus": "^0.54.8",
-    "uglify-js": "^3.10.4"
+    "uglify-js": "^3.13.9"
   },
   "dependencies": {
-    "jquery": "^3.5.1"
+    "jquery": "^3.6.0"
   }
 }
