@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/jquery.steps)](https://www.npmjs.com/package/jquery.steps)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![npm](https://img.shields.io/npm/dm/jquery.steps)](https://www.npmjs.com/package/jquery.steps)
-[![npm](https://img.shields.io/jsdelivr/npm/hm/jquery.steps)](https://www.npmjs.com/package/jquery.steps)
+[![npm](https://img.shields.io/jsdelivr/npm/hm/jquery.steps)](https://www.jsdelivr.com/package/npm/jquery.steps)
 
 > A simple, lightweight jQuery step wizard plugin.
 
