@@ -46,12 +46,12 @@ class Steps {
     // set default step
     this.setActiveStep(0, this.options.startAt, true);
 
-    this.setFooterBtns();
+    this.setFooterButtons();
 
     // show footer buttons
     if (!this.options.showFooterButtons) {
-      this.hideFooterBtns();
-      this.setFooterBtns = $.noop;
+      this.hideFooterButtons();
+      this.setFooterButtons = $.noop;
     }
   }
 
@@ -122,11 +122,11 @@ class Steps {
         }
         i = conditionIncrementOrDecrement(i);
       }
-      this.setFooterBtns();
+      this.setFooterButtons();
     }
   }
 
-  setFooterBtns() {
+  setFooterButtons() {
     const stepIndex = this.getStepIndex();
     const maxIndex = this.getMaxStepIndex();
     const $footer = this.el.find(this.options.footerSelector);
@@ -193,7 +193,7 @@ class Steps {
     this.hook('onFinish');
   }
 
-  hideFooterBtns() {
+  hideFooterButtons() {
     this.el.find(this.options.footerSelector).hide();
   }
 

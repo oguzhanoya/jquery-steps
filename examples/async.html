@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Async</title>
+  <link rel="stylesheet" href="../dist/jquery-steps.css">
+  <!-- Demo stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="step-app" id="demo">
+    <ul class="step-steps">
+      <li data-step-target="step1">Step 1</li>
+      <li data-step-target="step2">Step 2</li>
+      <li data-step-target="step3">Step 3</li>
+    </ul>
+    <div class="step-content">
+      <div class="step-tab-panel" data-step="step1">
+        ... step1
+      </div>
+      <div class="step-tab-panel" data-step="step2">
+        ... step2
+      </div>
+      <div class="step-tab-panel" data-step="step3">
+        ... step3
+      </div>
+    </div>
+    <div class="step-footer">
+      <button data-step-action="prev" class="step-btn">Previous</button>
+      <button data-step-action="next" class="step-btn">Next</button>
+      <button data-step-action="finish" class="step-btn">Finish</button>
+    </div>
+  </div>
+  <div class="loader">Loading...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+  <script src="../dist/jquery-steps.js"></script>
+  <script>
+    var loader = {
+      isLoading: false,
+      show: function() {
+        loader.isLoading = true;
+        $('.loader').show();
+      },
+      hide: function() {
+        loader.isLoading = false;
+        $('.loader').hide();
+      }
+    };
+
+    var xhr = null;
+    var isAllowChangeToNextStep = false;
+    var targetStepIndex = 1; // step2
+
+    var steps = $('#demo').steps({
+      onChange: function(currentIndex, newIndex, stepDirection) {
+
+        if (isAllowChangeToNextStep && !loader.isLoading) {
+          isAllowChangeToNextStep = false;
+          return true;
+        }
+
+        if (currentIndex === targetStepIndex) {
+          if (stepDirection === 'forward') {
+
+            if (!loader.isLoading) {
+              loader.show();
+
+              xhr = $.ajax({
+                url: 'https://jsonplaceholder.typicode.com/todos/4'
+              })
+              .done(function(response) {
+                loader.hide();
+
+                // success
+                if (response.completed) {
+                  isAllowChangeToNextStep = true;
+
+                  var stepIndex = steps_api.getStepIndex();
+                  if (stepIndex === targetStepIndex) {
+                    steps_api.next();
+                  }
+                }
+              });
+
+            }
+
+            return false;
+          }
+        }
+
+        if (xhr) {
+          xhr.abort();
+          loader.hide();
+        }
+
+        return true;
+      },
+      onFinish: function() {
+        alert('Wizard Completed');
+      }
+    });
+
+    var steps_api = steps.data('plugin_Steps');
+  </script>
+</body>
+</html>
