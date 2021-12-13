@@ -1,5 +1,5 @@
 /*!
-    * Steps v1.1.2
+    * Steps v1.1.3
     * https://github.com/oguzhanoya/jquery-steps
     *
     * Copyright (c) 2021 oguzhanoya
@@ -10,7 +10,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
   typeof define === 'function' && define.amd ? define(['jquery'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.$));
-}(this, (function ($$1) { 'use strict';
+})(this, (function ($$1) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -35,6 +35,9 @@
   function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
     return Constructor;
   }
 
@@ -61,9 +64,9 @@
       _classCallCheck(this, Steps);
 
       // Extend defaults with the init options.
-      this.options = $__default['default'].extend({}, DEFAULTS, options); // Store main DOM element.
+      this.options = $__default["default"].extend({}, DEFAULTS, options); // Store main DOM element.
 
-      this.el = $__default['default'](element);
+      this.el = $__default["default"](element);
       this.stepSelector = "".concat(this.options.stepSelector, " [data-step-target]");
       this.footerSelector = "".concat(this.options.footerSelector, " [data-step-action]");
       this.contentSelector = "".concat(this.options.contentSelector, " [data-step]"); // Initialize
@@ -77,7 +80,7 @@
         e.preventDefault();
         var self = e.data.self;
         var all = self.el.find(self.stepSelector);
-        var next = $__default['default'](this).closest('[data-step-target]');
+        var next = $__default["default"](this).closest('[data-step-target]');
         var nextStep = all.index(next);
         var stepIndex = e.data.self.getStepIndex();
         e.data.self.setActiveStep(stepIndex, nextStep);
@@ -86,7 +89,7 @@
       key: "btnClick",
       value: function btnClick(e) {
         e.preventDefault();
-        var statusAction = $__default['default'](this).data('step-action');
+        var statusAction = $__default["default"](this).data('step-action');
         e.data.self.setAction(statusAction);
       }
     }, {
@@ -95,20 +98,20 @@
         this.hook('onInit');
         var self = this; // step click event
 
-        $__default['default'](this.el).find(this.stepSelector).on('click', {
+        $__default["default"](this.el).find(this.stepSelector).on('click', {
           self: self
         }, this.stepClick); // button click event
 
-        $__default['default'](this.el).find(this.footerSelector).on('click', {
+        $__default["default"](this.el).find(this.footerSelector).on('click', {
           self: self
         }, this.btnClick); // set default step
 
         this.setActiveStep(0, this.options.startAt, true);
-        this.setFooterBtns(); // show footer buttons
+        this.setFooterButtons(); // show footer buttons
 
         if (!this.options.showFooterButtons) {
-          this.hideFooterBtns();
-          this.setFooterBtns = $__default['default'].noop;
+          this.hideFooterButtons();
+          this.setFooterButtons = $__default["default"].noop;
         }
       }
     }, {
@@ -122,8 +125,8 @@
       key: "destroy",
       value: function destroy() {
         this.hook('onDestroy');
-        $__default['default'](this.el).find(this.stepSelector).off('click');
-        $__default['default'](this.el).find(this.footerSelector).off('click');
+        $__default["default"](this.el).find(this.stepSelector).off('click');
+        $__default["default"](this.el).find(this.footerSelector).off('click');
         this.el.removeData('plugin_Steps');
         this.el.remove();
       }
@@ -203,12 +206,12 @@
             i = conditionIncrementOrDecrement(i);
           }
 
-          this.setFooterBtns();
+          this.setFooterButtons();
         }
       }
     }, {
-      key: "setFooterBtns",
-      value: function setFooterBtns() {
+      key: "setFooterButtons",
+      value: function setFooterButtons() {
         var stepIndex = this.getStepIndex();
         var maxIndex = this.getMaxStepIndex();
         var $footer = this.el.find(this.options.footerSelector);
@@ -289,39 +292,39 @@
         this.hook('onFinish');
       }
     }, {
-      key: "hideFooterBtns",
-      value: function hideFooterBtns() {
+      key: "hideFooterButtons",
+      value: function hideFooterButtons() {
         this.el.find(this.options.footerSelector).hide();
       }
     }], [{
       key: "setDefaults",
       value: function setDefaults(options) {
-        $__default['default'].extend(DEFAULTS, $__default['default'].isPlainObject(options) && options);
+        $__default["default"].extend(DEFAULTS, $__default["default"].isPlainObject(options) && options);
       }
     }]);
 
     return Steps;
   }();
 
-  var version = "1.1.2";
+  var version = "1.1.3";
 
-  var other = $__default['default'].fn.steps;
+  var other = $__default["default"].fn.steps;
 
-  $__default['default'].fn.steps = function (options) {
+  $__default["default"].fn.steps = function (options) {
     return this.each(function () {
-      if (!$__default['default'].data(this, 'plugin_Steps')) {
-        $__default['default'].data(this, 'plugin_Steps', new Steps(this, options));
+      if (!$__default["default"].data(this, 'plugin_Steps')) {
+        $__default["default"].data(this, 'plugin_Steps', new Steps(this, options));
       }
     });
   };
 
-  $__default['default'].fn.steps.version = version;
-  $__default['default'].fn.steps.setDefaults = Steps.setDefaults; // No conflict
+  $__default["default"].fn.steps.version = version;
+  $__default["default"].fn.steps.setDefaults = Steps.setDefaults; // No conflict
 
-  $__default['default'].fn.steps.noConflict = function () {
-    $__default['default'].fn.steps = other;
+  $__default["default"].fn.steps.noConflict = function () {
+    $__default["default"].fn.steps = other;
     return this;
   };
 
-})));
+}));
 //# sourceMappingURL=jquery-steps.js.map

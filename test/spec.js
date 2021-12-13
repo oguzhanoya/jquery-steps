@@ -17,7 +17,7 @@ describe('jquery steps', function () {
 
   it('version', function () {
     var ver = $.fn.steps.version;
-    expect(ver).toEqual('1.1.2');
+    expect(ver).toEqual('1.1.3');
   });
 
   it('next', function () {
