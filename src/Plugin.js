@@ -2,7 +2,7 @@ import $ from 'jquery';
 import Steps from './Steps';
 import { version } from '../package.json';
 
-const other = $.fn.steps;
+const previousStepsPlugin = $.fn.steps;
 
 $.fn.steps = function (options) {
   return this.each(function () {
@@ -17,6 +17,6 @@ $.fn.steps.setDefaults = Steps.setDefaults;
 
 // No conflict
 $.fn.steps.noConflict = function () {
-  $.fn.steps = other;
+  $.fn.steps = previousStepsPlugin;
   return this;
 };

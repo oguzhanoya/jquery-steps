@@ -1,6 +1,6 @@
 {
   "name": "jquery.steps",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "A simple, lightweight jQuery step wizard plugin.",
   "main": "./dist/jquery-steps.js",
   "repository": {
@@ -14,12 +14,12 @@
   "scripts": {
     "build:css": "stylus src/styl/jquery-steps.styl -m -o dist/",
     "build:css-dev": "stylus -w src/styl/jquery-steps.styl -m -o dist/",
-    "build:js": "rollup -c",
-    "build:js-dev": "rollup -c -w",
+    "build:js": "rollup -c --bundleConfigAsCjs",
+    "build:js-dev": "rollup -c -w --bundleConfigAsCjs",
     "build": "run-p build:js build:css",
     "dev": "run-p build:css-dev build:js-dev",
-    "lint": "eslint src",
-    "lint-fix": "eslint --fix src",
+    "lint": "eslint --fix src",
+    "format": "prettier . --write --list-different",
     "compress": "uglifyjs dist/jquery-steps.js -o dist/jquery-steps.min.js -c -m --comments /^!/",
     "prebuild": "npm run lint",
     "postbuild": "npm run compress",
@@ -28,19 +28,22 @@
   "author": "oguzhanoya",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.16.5",
-    "@babel/preset-env": "^7.16.5",
-    "eslint": "^7.32.0",
+    "@babel/core": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-json": "^6.0.0",
+    "eslint": "^8.30.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "npm-run-all": "^4.1.5",
-    "rollup": "^2.61.1",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-json": "^4.0.0",
-    "stylus": "^0.55.0",
-    "uglify-js": "^3.14.5"
+    "prettier": "^2.8.1",
+    "rollup": "^3.9.0",
+    "stylus": "^0.59.0",
+    "uglify-js": "^3.17.4"
   },
   "dependencies": {
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.3"
   }
 }

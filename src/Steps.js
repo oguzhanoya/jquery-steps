@@ -9,9 +9,11 @@ class Steps {
     // Store main DOM element.
     this.el = $(element);
 
-    this.stepSelector = `${this.options.stepSelector} [data-step-target]`;
-    this.footerSelector = `${this.options.footerSelector} [data-step-action]`;
-    this.contentSelector = `${this.options.contentSelector} [data-step]`;
+    this.selectors = {
+      step: `${this.options.stepSelector} [data-step-target]`,
+      footer: `${this.options.footerSelector} [data-step-action]`,
+      content: `${this.options.contentSelector} [data-step]`,
+    };
 
     // Initialize
     this.init();
@@ -20,11 +22,11 @@ class Steps {
   stepClick(e) {
     e.preventDefault();
     const { self } = e.data;
-    const all = self.el.find(self.stepSelector);
-    const next = $(this).closest('[data-step-target]');
-    const nextStep = all.index(next);
-    const stepIndex = e.data.self.getStepIndex();
-    e.data.self.setActiveStep(stepIndex, nextStep);
+    const all = self.el.find(self.selectors.step);
+    const next = e.currentTarget;
+    const nextStepIndex = all.index(next);
+    const currentStepIndex = e.data.self.getStepIndex();
+    e.data.self.setActiveStep(currentStepIndex, nextStepIndex);
   }
 
   btnClick(e) {
@@ -35,24 +37,29 @@ class Steps {
 
   init() {
     this.hook('onInit');
-    const self = this;
 
-    // step click event
-    $(this.el).find(this.stepSelector).on('click', { self }, this.stepClick);
-
-    // button click event
-    $(this.el).find(this.footerSelector).on('click', { self }, this.btnClick);
+    this.initEventListeners();
 
     // set default step
     this.setActiveStep(0, this.options.startAt, true);
 
-    this.setFooterButtons();
-
     // show footer buttons
     if (!this.options.showFooterButtons) {
       this.hideFooterButtons();
-      this.setFooterButtons = $.noop;
+      this.updateFooterButtons = $.noop;
     }
+  }
+
+  initEventListeners() {
+    // step click event
+    $(this.el)
+      .find(this.selectors.step)
+      .on('click', { self: this }, this.stepClick);
+
+    // button click event
+    $(this.el)
+      .find(this.selectors.footer)
+      .on('click', { self: this }, this.btnClick);
   }
 
   hook(hookName) {
@@ -63,20 +70,21 @@ class Steps {
 
   destroy() {
     this.hook('onDestroy');
-    $(this.el).find(this.stepSelector).off('click');
-    $(this.el).find(this.footerSelector).off('click');
+    $(this.el).find(this.selectors.step).off('click');
+    $(this.el).find(this.selectors.footer).off('click');
     this.el.removeData('plugin_Steps');
     this.el.remove();
   }
 
   getStepIndex() {
-    const all = this.el.find(this.stepSelector);
-    const stepIndex = all.index(all.filter(`.${this.options.activeClass.split(' ').join('.')}`));
+    const all = this.el.find(this.selectors.step);
+    const activeClass = this.options.activeClass.split(' ').join('.');
+    const stepIndex = all.index(all.filter(`.${activeClass}`));
     return stepIndex;
   }
 
   getMaxStepIndex() {
-    return this.el.find(this.stepSelector).length - 1;
+    return this.el.find(this.selectors.step).length - 1;
   }
 
   getStepDirection(stepIndex, newIndex) {
@@ -90,103 +98,142 @@ class Steps {
   }
 
   setShowStep(idx, removeClass, addClass = '') {
-    const $targetStep = this.el.find(this.stepSelector).eq(idx);
+    const $targetStep = this.el.find(this.selectors.step).eq(idx);
     $targetStep.removeClass(removeClass).addClass(addClass);
-    const $tabContent = this.el.find(this.contentSelector);
-    $tabContent.removeClass(this.options.activeClass).eq(idx).addClass(this.options.activeClass);
+
+    const $tabContent = this.el.find(this.selectors.content);
+    $tabContent
+      .removeClass(this.options.activeClass)
+      .eq(idx)
+      .addClass(this.options.activeClass);
   }
 
   setActiveStep(currentIndex, newIndex, init = false) {
     if (newIndex !== currentIndex || init) {
-      const conditionDirection = (newIndex > currentIndex)
-        ? (start) => start <= newIndex
-        : (start) => start >= newIndex;
+      const conditionDirection =
+        newIndex > currentIndex
+          ? (start) => start <= newIndex
+          : (start) => start >= newIndex;
 
+      // prettier-ignore
       const conditionIncrementOrDecrement = (newIndex > currentIndex)
-        ? (start) => { let s = start; s += 1; return s; }
-        : (start) => { let s = start; s -= 1; return s; };
+        ? (start) => start + 1
+        : (start) => start - 1;
 
       let i = currentIndex;
       while (conditionDirection(i)) {
         const stepDirection = this.getStepDirection(i, newIndex);
-        if (i === newIndex) {
-          this.setShowStep(i, this.options.doneClass, this.options.activeClass);
-        } else {
-          const checkDone = stepDirection === 'forward' && this.options.doneClass;
-          this.setShowStep(i, `${this.options.activeClass} ${this.options.errorClass} ${this.options.doneClass}`, checkDone);
-        }
-        const validStep = this.options.onChange(i, newIndex, stepDirection);
+        this.updateStep(i, newIndex, stepDirection);
+        const validStep = this.isValidStep(i, newIndex, stepDirection);
         if (!validStep) {
-          this.setShowStep(i, this.options.doneClass, `${this.options.activeClass} ${this.options.errorClass}`);
+          this.updateStep(i, newIndex, stepDirection, validStep);
           i = newIndex;
         }
         i = conditionIncrementOrDecrement(i);
       }
-      this.setFooterButtons();
+      this.updateFooterButtons();
     }
   }
 
-  setFooterButtons() {
-    const stepIndex = this.getStepIndex();
-    const maxIndex = this.getMaxStepIndex();
-    const $footer = this.el.find(this.options.footerSelector);
-
-    if (stepIndex === 0) {
-      $footer.find('[data-step-action="prev"]').hide();
-    }
-
-    if (stepIndex > 0 && this.options.showBackButton) {
-      $footer.find('[data-step-action="prev"]').show();
-    }
-
-    if (maxIndex === stepIndex) {
-      $footer.find('[data-step-action="prev"]').show();
-      $footer.find('[data-step-action="next"]').hide();
-      $footer.find('[data-step-action="finish"]').show();
+  updateStep(currentIndex, newIndex, direction, isValidStep = true) {
+    if (currentIndex === newIndex) {
+      this.setShowStep(
+        currentIndex,
+        this.options.doneClass,
+        this.options.activeClass,
+      );
+    } else if (isValidStep) {
+      const checkDone = direction === 'forward' && this.options.doneClass;
+      this.setShowStep(
+        currentIndex,
+        `${this.options.activeClass} ${this.options.errorClass} ${this.options.doneClass}`,
+        checkDone,
+      );
     } else {
-      $footer.find('[data-step-action="next"]').show();
-      $footer.find('[data-step-action="finish"]').hide();
+      this.setShowStep(
+        currentIndex,
+        this.options.doneClass,
+        `${this.options.activeClass} ${this.options.errorClass}`,
+      );
+    }
+  }
+
+  isValidStep(currentIndex, newIndex, direction) {
+    return this.options.onChange(currentIndex, newIndex, direction);
+  }
+
+  updateFooterButtons() {
+    const currentStepIndex = this.getStepIndex();
+    const maxStepIndex = this.getMaxStepIndex();
+
+    const $footer = this.el.find(this.selectors.footer);
+
+    const $prevButton = $footer.filter('[data-step-action="prev"]');
+    const $nextButton = $footer.filter('[data-step-action="next"]');
+    const $finishButton = $footer.filter('[data-step-action="finish"]');
+
+    // hide prev button if current step is the first step
+    if (currentStepIndex === 0) {
+      $prevButton.hide();
+    } else {
+      $prevButton.show();
     }
 
+    // hide forward button and show finish button if current step is the last step
+    if (currentStepIndex === maxStepIndex) {
+      $nextButton.hide();
+      $finishButton.show();
+    } else {
+      $nextButton.show();
+      $finishButton.hide();
+    }
+
+    // hide back button if showBackButton option is false
     if (!this.options.showBackButton) {
-      $footer.find('[data-step-action="prev"]').hide();
+      $prevButton.hide();
     }
   }
 
   setAction(action) {
-    const stepIndex = this.getStepIndex();
-    let nextStep = stepIndex;
-    if (action === 'prev') { nextStep -= 1; }
-    if (action === 'next') { nextStep += 1; }
+    const currentStepIndex = this.getStepIndex();
+    let nextStep = currentStepIndex;
+    if (action === 'prev') {
+      nextStep -= 1;
+    }
+    if (action === 'next') {
+      nextStep += 1;
+    }
     if (action === 'finish') {
-      const validStep = this.options.onChange(stepIndex, nextStep, 'forward');
+      const validStep = this.isValidStep(currentStepIndex, nextStep, 'forward');
       if (validStep) {
         this.hook('onFinish');
       } else {
-        this.setShowStep(stepIndex, '', this.options.errorClass);
+        this.setShowStep(currentStepIndex, '', this.options.errorClass);
       }
     } else {
-      this.setActiveStep(stepIndex, nextStep);
+      this.setActiveStep(currentStepIndex, nextStep);
     }
   }
 
   setStepIndex(idx) {
     const maxIndex = this.getMaxStepIndex();
     if (idx <= maxIndex) {
-      const stepIndex = this.getStepIndex();
-      this.setActiveStep(stepIndex, idx);
+      const currentStepIndex = this.getStepIndex();
+      this.setActiveStep(currentStepIndex, idx);
     }
   }
 
   next() {
-    const stepIndex = this.getStepIndex();
+    const currentStepIndex = this.getStepIndex();
     const maxIndex = this.getMaxStepIndex();
-    return maxIndex === stepIndex ? this.setAction('finish') : this.setAction('next');
+    return maxIndex === currentStepIndex
+      ? this.setAction('finish')
+      : this.setAction('next');
   }
 
   prev() {
-    const stepIndex = this.getStepIndex();
-    return stepIndex !== 0 && this.setAction('prev');
+    const currentStepIndex = this.getStepIndex();
+    return currentStepIndex !== 0 && this.setAction('prev');
   }
 
   finish() {
@@ -194,7 +241,7 @@ class Steps {
   }
 
   hideFooterButtons() {
-    this.el.find(this.options.footerSelector).hide();
+    this.el.find(this.selectors.footer).hide();
   }
 
   static setDefaults(options) {

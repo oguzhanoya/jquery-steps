@@ -1,5 +1,4 @@
 describe('jquery steps', function () {
-
   var steps_api;
   beforeEach(function () {
     var data = {
@@ -17,7 +16,7 @@ describe('jquery steps', function () {
 
   it('version', function () {
     var ver = $.fn.steps.version;
-    expect(ver).toEqual('1.1.3');
+    expect(ver).toEqual('1.1.4');
   });
 
   it('next', function () {
@@ -34,5 +33,4 @@ describe('jquery steps', function () {
     var idx = steps_api.getStepIndex();
     expect(idx).toEqual(1);
   });
-
 });
